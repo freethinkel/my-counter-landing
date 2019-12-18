@@ -23,7 +23,7 @@ const menus = [
   }
 ];
 
-function Header({ state }) {
+function Header() {
   const [scrollPos, changeScrollPos] = useState(0);
   useEffect(() => {
     changeScrollPos(window.pageYOffset);
@@ -47,7 +47,7 @@ function Header({ state }) {
           <a className={classes.logo} onClick={goToHome} href="/">
             <img src={require('../assets/images/logo.svg')} alt="Логотип" />
           </a>
-          <SelectCity state={state} />
+          <SelectCity />
           <Menu scrollPos={scrollPos} />
         </div>
       </div>

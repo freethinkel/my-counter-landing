@@ -29,9 +29,13 @@ export default function Select({
     setIsOpen(false);
   }
   return (
-    <div className={cx(classes.wrapper, className, classes[appearance])}>
+    <div className={cx(classes.wrapper, className)}>
       <button
-        className={cx(classes.select, isOpen && classes.select_open)}
+        className={cx(
+          classes.select,
+          classes[appearance],
+          isOpen && classes.select_open
+        )}
         onClick={() => setIsOpen(!isOpen)}
       >
         <span className={cx(currentIndex === -1 && classes.placeholder)}>
@@ -46,18 +50,21 @@ export default function Select({
       {isOpen && (
         <ClickOutside onClickOutside={() => setIsOpen(false)}>
           <div>
-            <List setValue={i => setCurrentIndex(i)} options={options} />
+            <List
+              appearance={appearance}
+              setValue={i => setCurrentIndex(i)}
+              options={options}
+            />
           </div>
         </ClickOutside>
       )}
-      `
     </div>
   );
 }
 
-function List({ options, setValue }) {
+function List({ options, setValue, appearance }) {
   return (
-    <ul className={classes.list}>
+    <ul className={cx(classes.list, classes[appearance] + '_list')}>
       {options.map((o, i) => (
         <li key={i}>
           <button onClick={() => setValue(i)}>{o.title}</button>
@@ -98,23 +105,21 @@ const classes = {
       transform: rotate(180deg);
     }
   `,
+  small_list: css`
+    margin-top: 8px;
+  `,
   small: css`
-    & .select {
-      border-bottom: none !important;
-      flex-direction: row-reverse;
-      justify-content: flex-end;
-      height: 32px;
-      & span {
-        padding: 0;
-        font-size: 14px;
-        padding-left: 8px;
-      }
-      & img {
-        width: 10px;
-      }
+    border-bottom: none !important;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    height: 32px;
+    & span {
+      padding: 0;
+      font-size: 14px;
+      padding-left: 8px;
     }
-    & .list {
-      margin-top: 8px;
+    & img {
+      width: 10px;
     }
   `,
   list: css`

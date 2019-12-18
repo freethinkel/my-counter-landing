@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
-import settings from './slices/settings';
+import cities from './slices/cities';
 import { configureStore } from '@reduxjs/toolkit';
 
 const reducers = combineReducers({
-  settings
+  cities
 });
 
 export default configureStore({ reducer: reducers });

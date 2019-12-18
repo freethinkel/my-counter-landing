@@ -47,15 +47,3 @@ p {
   margin: 0;
   padding: 0;
 }
-
-@keyframes skeleton_animation {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.4;
-  }
-  100% {
-    pacity: 1;
-  }
-}

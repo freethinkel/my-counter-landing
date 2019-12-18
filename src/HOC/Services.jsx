@@ -1,6 +1,7 @@
 import React from 'react';
 import { css, cx } from 'linaria';
 import ServiceCard from '../components/ServiceCard';
+import SliderControls from '../components/SliderControls';
 
 function Services() {
   return (
@@ -14,6 +15,7 @@ function Services() {
               счетчиков на воду, электричество, газ и тепло
             </p>
           </div>
+          <SliderControls />
           <div className={classes.services}>
             <div className={classes.service_item}>
               <ServiceCard />

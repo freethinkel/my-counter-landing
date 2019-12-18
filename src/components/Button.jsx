@@ -2,6 +2,20 @@ import React from 'react';
 import { css, cx } from 'linaria';
 import { COLORS } from '../assets/styles';
 
+const Button = ({ children, color, className, ...props }) => {
+  console.log(classes);
+  return (
+    <button
+      {...props}
+      className={cx(classes.btn, color && classes[color], className)}
+    >
+      {children}
+    </button>
+  );
+};
+
+export default Button;
+
 const classes = {
   btn: css`
     border: none;
@@ -18,8 +32,18 @@ const classes = {
     align-items: center;
     background-color: #eee;
     cursor: pointer;
+    transition: 0.3s;
+    &:not([disabled]) {
+      &:focus,
+      &:hover {
+        box-shadow: 0px 4px 3px rgba(47, 12, 12, 0.3);
+      }
+      &:active {
+        box-shadow: 0px 6px 10px rgba(47, 12, 12, 0.3);
+      }
+    }
     &[disabled] {
-      opacity: 0.6;
+      opacity: 0.4;
       cursor: default;
     }
   `,
@@ -32,17 +56,3 @@ const classes = {
     color: #fff;
   `
 };
-
-const Button = ({ children, color, className, ...props }) => {
-  console.log(classes);
-  return (
-    <button
-      {...props}
-      className={cx(classes.btn, color && classes[color], className)}
-    >
-      {children}
-    </button>
-  );
-};
-
-export default Button;
