@@ -11,10 +11,14 @@ import Promo from './HOC/Promo';
 import Footer from './HOC/Footer';
 import { useDispatch } from 'react-redux';
 import { initCitiesAction } from './store/slices/cities';
+import { getAppSettingsAction } from './store/slices/settings';
 
 function App() {
   const dispatch = useDispatch();
-  useEffect(() => initCitiesAction(dispatch), []);
+  useEffect(() => {
+    initCitiesAction(dispatch);
+    getAppSettingsAction(dispatch)();
+  }, []);
   return (
     <div className="page_wrapper">
       <Header />
