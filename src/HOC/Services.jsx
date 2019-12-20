@@ -1,24 +1,23 @@
 import React from 'react';
 import { css, cx } from 'linaria';
 import ServiceCard from '../components/ServiceCard';
+import ServiceCardDetails from '../components/ServiceCardDetails';
 import SliderControls from '../components/SliderControls';
+import { useSelector } from 'react-redux';
 
 function Services() {
+  const services = useSelector(state => state.settings.services);
   return (
     <section scroll-data="services" className={classes.section}>
       <div className="container">
         <div className="row">
           <div className={classes.header}>
             <h2 className={cx('section_title', classes.title)}>Услуги</h2>
-            <p className={classes.p}>
-              На протяжении 10 лет наша компания занимается поверкой и заменой
-              счетчиков на воду, электричество, газ и тепло
-            </p>
           </div>
           <SliderControls />
           <div className={classes.services}>
             <div className={classes.service_item}>
-              <ServiceCard />
+              <ServiceCardDetails />
             </div>
             <div className={classes.service_item}>
               <ServiceCard />

@@ -31,6 +31,10 @@ export const getAppSettingsAction = dispatch => () => {
     console.log(data);
     let _data = { ...data };
     _data.banner_photo = data.banner_photo.fields;
+    _data.services = data.services.map(e => ({
+      ...e.fields,
+      photo: e.fields.photo.fields
+    }));
     dispatch(setSettingsData(_data));
   });
 };
