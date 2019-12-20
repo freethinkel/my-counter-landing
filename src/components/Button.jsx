@@ -3,7 +3,6 @@ import { css, cx } from 'linaria';
 import { COLORS } from '../assets/styles';
 
 const Button = ({ children, color, className, ...props }) => {
-  console.log(classes);
   return (
     <button
       {...props}

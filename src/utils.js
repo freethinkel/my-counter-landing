@@ -42,3 +42,20 @@ export const scrollToSection = id => {
     scrollToElem(selector, offset);
   }
 };
+
+// getPhotoUrl(props.src, {
+//   w: 1200,
+//   fm: 'jpg',
+//   fl: 'progressive',
+//   q: 78
+// });
+
+export const getPhotoUrl = (url, params) => url + toQuery(params);
+
+export const toQuery = obj => {
+  let query = '?';
+  Object.keys(obj).forEach(key => {
+    query += `${key}=${obj[key]}&`;
+  });
+  return query.slice(0, -1);
+};

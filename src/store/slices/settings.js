@@ -3,20 +3,34 @@ import { getSettingsContentful } from '../api';
 
 const settingsSlice = createSlice({
   name: 'settings',
-  initialState: {},
+  initialState: {
+    app_loading: true,
+    name: '',
+    phone_number: '',
+    header: '',
+    description: {},
+    banner_photo: {}
+  },
   reducers: {
-    setData(state, action) {
-      state = action.payload;
+    setSettingsData(state, action) {
+      console.log(action);
+      Object.keys(action.payload).forEach(key => {
+        state[key] = action.payload[key];
+      });
+      state.app_loading = false;
     }
   }
 });
 
-export const { setData } = settingsSlice.actions;
+export const { setSettingsData } = settingsSlice.actions;
 
 export default settingsSlice.reducer;
 
 export const getAppSettingsAction = dispatch => () => {
   getSettingsContentful().then(data => {
     console.log(data);
+    let _data = { ...data };
+    _data.banner_photo = data.banner_photo.fields;
+    dispatch(setSettingsData(_data));
   });
 };
