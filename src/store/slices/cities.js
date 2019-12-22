@@ -27,7 +27,12 @@ export default citiesSlice.reducer;
 export const initCitiesAction = dispatch => {
   Promise.all([getAllCities(), detectCity()])
     .then(([cities, detectedCity]) => {
-      dispatch(setCurrentCity(detectedCity.city));
+      cities = cities.filter(c => isNaN(+c.city));
+      const findedCity = cities.find(
+        c =>
+          c.city.trim().toLowerCase() === detectedCity.city.trim().toLowerCase()
+      );
+      dispatch(setCurrentCity(findedCity || defaultCity));
       dispatch(setCities(cities));
     })
     .catch(err => {

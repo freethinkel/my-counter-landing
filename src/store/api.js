@@ -9,7 +9,7 @@ export const getAllCities = () => {
 
 export const detectCity = () => {
   return axios.get('http://ip-api.com/json?lang=ru').then(res => {
-    return { ...res.data, city: 'Шуя' };
+    return res.data;
   });
 };
 

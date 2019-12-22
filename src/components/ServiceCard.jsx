@@ -1,15 +1,13 @@
 import React from 'react';
-import { COLORS } from '../assets/styles';
-import Button from './Button';
 import { cx, css } from 'linaria';
 
-function ServiceCard({ title, photo, className }) {
+function ServiceCard({ title, photo, className, onClick }) {
   return (
-    <div className={cx(classes.wrapper, className)}>
+    <div className={cx(classes.wrapper, className)} onClick={onClick}>
       <div className={classes.header}>
-        <h5 className={classes.title}>{title}asdas</h5>
+        <h5 className={classes.title}>{title}</h5>
       </div>
-      <img className={classes.image} src={photo} alt="Фото услуги" />
+      <img className={classes.photo} src={photo} alt="Фото услуги" />
     </div>
   );
 }
@@ -19,9 +17,12 @@ export default ServiceCard;
 const classes = {
   wrapper: css`
     height: 284px;
+    display: flex;
+    flex-direction: column;
     border-radius: 10px;
     background-color: #fff;
     box-shadow: 0px 4px 10px rgba(70, 16, 16, 0.4);
+    overflow: hidden;
   `,
   header: css`
     height: 82px;
@@ -38,7 +39,7 @@ const classes = {
   photo: css`
     object-fit: cover;
     object-position: center;
-    height: 100%;
+    flex-grow: 1;
     width: 100%;
     background-color: red;
   `

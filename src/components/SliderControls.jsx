@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { css, cx } from 'linaria';
-import { COLORS } from '../assets/styles';
+import { COLORS, SIZES } from '../assets/styles';
 
-const SliderControls = ({ activeIndex = 0, length = 6 }) => {
+const SliderControls = ({ activeIndex = 0, length = 0, onChange }) => {
   const [_activeIndex, setActiveIndex] = useState(activeIndex);
+  useEffect(() => {
+    setActiveIndex(activeIndex);
+  }, [activeIndex]);
   const changeIndex = i => {
     setActiveIndex(i);
+    onChange && onChange(i);
   };
   return (
     <div className={classes.wrapper}>
@@ -67,6 +71,10 @@ const classes = {
       border-radius: 50%;
       background-color: #f9d5d5;
       transition: 0.3s;
+      @media screen and (max-width: ${SIZES.md}px) {
+        width: 9px;
+        height: 9px;
+      }
     }
   `,
   dot_active: css`
@@ -83,6 +91,12 @@ const classes = {
     margin: 0;
     outline: none;
     transition: 0.3s;
+    & img {
+      height: 100%;
+    }
+    @media screen and (max-width: ${SIZES.md}px) {
+      height: 27px;
+    }
     &[disabled] {
       opacity: 0.4;
       cursor: default;
@@ -94,5 +108,8 @@ const classes = {
   dot_wrapper: css`
     padding: 0 16px;
     display: flex;
+    @media screen and (max-width: ${SIZES.md}px) {
+      padding: 0 8px;
+    }
   `
 };

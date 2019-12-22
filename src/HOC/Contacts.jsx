@@ -2,26 +2,34 @@ import React from 'react';
 // import classes from './Contacts.module.scss';
 import Map from '../components/Map';
 import { cx, css } from 'linaria';
-import { COLORS } from '../assets/styles';
+import { COLORS, SIZES } from '../assets/styles';
+import { useSelector } from 'react-redux';
+import { phonePipe } from '../utils';
 
 export default function Contacts() {
+  const city = useSelector(state => state.settings.company_city);
+  const phone = useSelector(state => state.settings.phone_number);
+  const address = useSelector(state => state.settings.company_street);
+  const schedule = useSelector(state => state.settings.schedule);
+  const isMobileWidth = window.innerWidth <= 700;
   return (
     <section scroll-data="contacts" className={classes.contacts}>
       <div className="container">
         <div className={classes.card}>
           <h2 className={cx('section_title', classes.title)}>Контакты</h2>
-          <div className={classes.city}>г. Владимир</div>
-          <div className={classes.street}>ул. Студенческая д. 5А офис 503</div>
+          <div className={classes.city}>{city}</div>
+          <div className={classes.street}>{address}</div>
           <div className={classes.schedule}>График работы:</div>
-          <div className={classes.schedule_value}>пн-пт с 8:00 - 17:00</div>
-          <a className={classes.phone} href="tel:12">
-            8 (800) 775 - 70 - 71
+          <div className={classes.schedule_value}>{schedule}</div>
+          <a className={classes.phone} href={'tel:' + phone}>
+            {phonePipe(phone)}
           </a>
         </div>
       </div>
       <div className={classes.map}>
         <Map
-          coord={[55.823307, 49.123536]}
+          coord={[55.823307 + (isMobileWidth ? 0.001 : 0), 49.123536]}
+          placeCoord={[55.823307, 49.123536]}
           zoom={17}
           height={'100%'}
           icon={require('../assets/images/placemark.svg')}
@@ -35,6 +43,14 @@ const classes = {
   contacts: css`
     position: relative;
     padding: 100px 0;
+    @media screen and (max-width: ${SIZES.md}px) {
+      padding: 35px 0 430px;
+    }
+  `,
+  title: css`
+    @media screen and (max-width: ${SIZES.md}px) {
+      font-size: 24px;
+    }
   `,
   map: css`
     position: absolute;
@@ -47,28 +63,45 @@ const classes = {
   card: css`
     background-color: #ffffff;
     border-radius: 5px;
-    padding: 48px 30px;
     position: relative;
     z-index: 1;
     max-width: 407px;
+    padding: 48px 30px;
+    @media screen and (max-width: ${SIZES.md}px) {
+      padding: 24px 16px 48px;
+    }
   `,
   city: css`
-    color: $primary;
+    color: ${COLORS.primary};
     font-size: 24px;
     font-weight: bold;
     margin-top: 32px;
+    @media screen and (max-width: ${SIZES.md}px) {
+      font-size: 20px;
+    }
   `,
   street: css`
     font-size: 24px;
     margin-top: 12px;
+    @media screen and (max-width: ${SIZES.md}px) {
+      font-size: 20px;
+      margin-top: 6px;
+    }
   `,
   schedule: css`
     font-size: 18px;
     margin-top: 40px;
+    @media screen and (max-width: ${SIZES.md}px) {
+      font-size: 16px;
+      margin-top: 32px;
+    }
   `,
   schedule_value: css`
     margin-top: 4px;
     font-size: 24px;
+    @media screen and (max-width: ${SIZES.md}px) {
+      font-size: 20px;
+    }
   `,
   phone: css`
     color: ${COLORS.primary};
@@ -77,5 +110,9 @@ const classes = {
     text-decoration: none;
     margin-top: 32px;
     display: block;
+    @media screen and (max-width: ${SIZES.md}px) {
+      margin-top: 24px;
+      font-size: 20px;
+    }
   `
 };

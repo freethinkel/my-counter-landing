@@ -43,6 +43,38 @@ export const scrollToSection = id => {
   }
 };
 
+export const phonePipe = value => {
+  if (value) {
+    let arr;
+    if (value[0] === '+') {
+      arr =
+        value.substr(0, 2) +
+        ' (' +
+        value.substr(2, 3) +
+        ') ' +
+        value.substr(5, 3) +
+        '-' +
+        value.substr(8, 2) +
+        '-' +
+        value.substr(10);
+    } else {
+      arr =
+        +value[0] +
+        ' (' +
+        value.substr(1, 3) +
+        ') ' +
+        value.substr(4, 3) +
+        '-' +
+        value.substr(7, 2) +
+        '-' +
+        value.substr(9);
+    }
+    return arr;
+  } else {
+    return value;
+  }
+};
+
 // getPhotoUrl(props.src, {
 //   w: 1200,
 //   fm: 'jpg',

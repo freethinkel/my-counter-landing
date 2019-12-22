@@ -1,6 +1,6 @@
 import React from 'react';
 import { css, cx } from 'linaria';
-import { COLORS } from '../assets/styles';
+import { COLORS, SIZES } from '../assets/styles';
 
 const Button = ({ children, color, className, ...props }) => {
   return (
@@ -32,6 +32,10 @@ const classes = {
     background-color: #eee;
     cursor: pointer;
     transition: 0.3s;
+    @media screen and (max-width: ${SIZES.md}px) {
+      font-size: 18px;
+      height: 50px;
+    }
     &:not([disabled]) {
       &:focus,
       &:hover {

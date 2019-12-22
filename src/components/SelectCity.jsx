@@ -6,6 +6,7 @@ import Skeleton from './Skeleton';
 import { css } from 'linaria';
 import { setCurrentCity } from '../store/slices/cities';
 import { useDispatch } from 'react-redux';
+import { SIZES } from '../assets/styles';
 
 export default function SelectCity() {
   const selectedCity = useSelector(state => state.cities.currentCity);
@@ -20,9 +21,9 @@ export default function SelectCity() {
       {!!(cities && cities.length) && (
         <CustomSelector
           label="Ваш город"
-          defaultValue={selectedCity}
+          value={selectedCity}
           onSelect={i => selectCity(i)}
-          options={cities.map(c => ({ title: c.city, value: c.id }))}
+          options={cities.map(c => c.city)}
         />
       )}
     </div>
@@ -34,5 +35,10 @@ const classes = {
     position: relative;
     min-width: 170px;
     max-width: 190px;
+    @media screen and (max-width: ${SIZES.md}px) {
+      width: 100%;
+      max-width: 100%;
+      padding-bottom: 6px;
+    }
   `
 };

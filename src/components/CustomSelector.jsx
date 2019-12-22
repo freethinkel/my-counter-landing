@@ -1,33 +1,44 @@
 import React, { useState } from 'react';
 import Select from './Select';
 import { cx, css } from 'linaria';
+import { SIZES } from '../assets/styles';
 
 export default function CustomSelector({
   options = [],
   className,
-  defaultValue,
+  value,
   placeholder,
   label,
   onSelect
 }) {
   const [currentValue, setValue] = useState({});
+  const [isOpen, setIsOpen] = useState(false);
   const setCurrentValue = i => {
     setValue([i]);
     onSelect && onSelect(i);
   };
   return (
     <div className={cx(classes.wrapper, className)}>
-      <div className={classes.select}>
+      <div
+        className={classes.select}
+        onClick={() => {
+          setIsOpen(!isOpen);
+        }}
+      >
         <Select
           placeholder={label}
           className={classes.select_el}
           appearance="small"
+          state={isOpen}
           options={options}
           importantPlaceholder
-          onSelect={i => setCurrentValue(i)}
+          onChange={() => setIsOpen(!isOpen)}
+          onSelect={i => {
+            setCurrentValue(i);
+          }}
         />
-        <div className={classes.value}>
-          {currentValue.title || defaultValue || placeholder}
+        <div className={cx(classes.value, isOpen && classes.value_open)}>
+          {currentValue.title || value || placeholder}
         </div>
       </div>
     </div>
@@ -40,8 +51,12 @@ const classes = {
   `,
   select: css`
     display: flex;
+    cursor: pointer;
     flex-direction: column;
     justify-content: flex-start;
+    & ul {
+      margin-top: 35px;
+    }
   `,
   value: css`
     font-weight: bold;
@@ -49,6 +64,14 @@ const classes = {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    @media screen and (max-width: ${SIZES.md}px) {
+      padding-bottom: 6px;
+    }
+  `,
+  value_open: css`
+    @media screen and (max-width: ${SIZES.md}px) {
+      border-bottom: 2px solid #000;
+    }
   `,
   placeholder: css`
     color: #000;

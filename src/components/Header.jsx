@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { getHeaderSize, scrollToElem, scrollToSection } from '../utils';
+import {
+  getHeaderSize,
+  scrollToElem,
+  scrollToSection,
+  phonePipe
+} from '../utils';
 import SelectCity from './SelectCity';
-import { COLORS } from '../assets/styles';
+import { COLORS, SIZES } from '../assets/styles';
 import { cx, css } from 'linaria';
+import { useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
+import MobileHeader from './MobileHeader';
 
 const menus = [
   {
@@ -25,6 +33,7 @@ const menus = [
 
 function Header() {
   const [scrollPos, changeScrollPos] = useState(0);
+  const phone = useSelector(state => state.settings.phone_number);
   useEffect(() => {
     changeScrollPos(window.pageYOffset);
     function onScroll() {
@@ -34,23 +43,36 @@ function Header() {
     return () => window.removeEventListener('scroll', onScroll);
   }, [scrollPos]);
 
+  const history = useHistory();
   const goToHome = e => {
-    e.preventDefault();
-    window.history.pushState({}, 'home', '/');
     scrollToElem('body', 0);
   };
 
   return (
-    <header className={cx(classes.header, scrollPos > 20 && classes.active)}>
-      <div className="container">
-        <div className={classes.content}>
-          <a className={classes.logo} onClick={goToHome} href="/">
-            <img src={require('../assets/images/logo.svg')} alt="Логотип" />
-          </a>
-          <SelectCity />
-          <Menu scrollPos={scrollPos} />
+    <header>
+      <div className={cx(classes.header, classes.show_md, classes.none_md)}>
+        <div className="container">
+          <div className={classes.content}>
+            <Link className={classes.logo} onClick={goToHome} to="/">
+              <img src={require('../assets/images/logo.svg')} alt="Логотип" />
+            </Link>
+            <SelectCity />
+            <PhoneView
+              phone={phone}
+              goOrder={() => {
+                history.push('/');
+                setTimeout(() => {
+                  scrollToSection('ordering');
+                });
+              }}
+            />
+            <Menu scrollPos={scrollPos} />
+          </div>
         </div>
       </div>
+      <MobileHeader
+        className={cx(classes.header, classes.none, classes.show_md_min)}
+      />
     </header>
   );
 }
@@ -58,8 +80,12 @@ export default Header;
 
 function Menu({ scrollPos }) {
   const preventDefault = e => e.preventDefault();
+  const history = useHistory();
   const changeMenu = menuId => {
-    scrollToSection(menuId);
+    history.push('/');
+    setTimeout(() => {
+      scrollToSection(menuId);
+    });
     return preventDefault;
   };
   const triggers = {};
@@ -90,7 +116,66 @@ function Menu({ scrollPos }) {
   );
 }
 
+const PhoneView = ({ phone, goOrder }) => {
+  return (
+    <div className={classes.ordering_wrapper}>
+      <a
+        href="#ordering"
+        className={classes.ordering_link}
+        onClick={e => {
+          e.preventDefault();
+          goOrder();
+        }}
+      >
+        Оставить заявку
+      </a>
+      <a className={classes.ordering_phone} href={'tel:' + phone}>
+        {phonePipe(phone)}
+      </a>
+    </div>
+  );
+};
+
 const classes = {
+  none: css`
+    display: none;
+  `,
+  show_md: css`
+    @media screen and (min-width: ${SIZES.md}px) {
+      display: block;
+    }
+  `,
+  show_md_min: css`
+    @media screen and (max-width: ${SIZES.md}px) {
+      display: block;
+    }
+  `,
+  none_md: css`
+    @media screen and (max-width: ${SIZES.md}px) {
+      display: none;
+    }
+  `,
+  none_sm: css`
+    @media screen and (max-width: ${SIZES.sm}px) {
+      display: none;
+    }
+  `,
+  ordering_wrapper: css`
+    display: flex;
+    flex-direction: column;
+    padding-top: 8px;
+  `,
+  ordering_link: css`
+    color: ${COLORS.primary};
+    font-size: 14px;
+  `,
+  ordering_phone: css`
+    font-size: 20px;
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
+    margin-top: 8px;
+  `,
   header: css`
     padding: 18px 0;
     position: fixed;
@@ -108,6 +193,13 @@ const classes = {
   `,
   logo: css`
     text-decoration: none;
+    & img {
+      height: 100%;
+      object-fit: contain;
+    }
+    @media screen and (max-width: 1100px) {
+      height: 60px;
+    }
   `,
   menu: css`
     padding: 0;
@@ -139,7 +231,10 @@ const classes = {
     position: relative;
     line-height: 25px;
     display: inline-block;
-
+    @media screen and (max-width: 1100px) {
+      font-size: 16px;
+      padding: 8px;
+    }
     &:after {
       content: '';
       position: absolute;

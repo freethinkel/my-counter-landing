@@ -1,62 +1,65 @@
-import React from 'react';
-// import classes from './AboutCompany.module.scss';
+import React, { useState } from 'react';
 import AdvantageItem from '../components/AdvantageItem';
 import { cx, css } from 'linaria';
-// import { css } from '../../utils';
-
-const content = {
-  title: 'Наша компания',
-  text: [
-    'На протяжении 10 лет наша компания занимается поверкой и заменой приборов учета воды, электричества, газа и тепла. ',
-    'На протяжении 10 лет наша компания занимается поверкой и заменой приборов учета воды, электричества, газа и тепла. На протяжении 10 лет наша 10 лет наша компания занимается поверкойи заменой приборов учета воды, электричества, газа и тепла, газа и тепла.',
-    'На протяжении 10 лет наша компания занимается поверкой и заменой приборов учета воды, электричества, газа и тепла'
-  ],
-  items: [
-    {
-      icon: require('../assets/images/symbol.svg'),
-      title: 'Работаем по всей России',
-      description: 'Работаем по всей России'
-    },
-    {
-      icon: require('../assets/images/award.svg'),
-      title: 'На рынке больше 10 лет',
-      description:
-        'Работаем давно и качественно, поэтому наши клиенты обращаются повторно'
-    },
-    {
-      icon: require('../assets/images/request.svg'),
-      title: 'Удобная подача заявки',
-      description:
-        'Наши клиенты могут не только звонить на горячую линию, но и оставить заявку прямо на сайте'
-    }
-  ]
-};
+import { useSelector } from 'react-redux';
+import RichText from '@madebyconnor/rich-text-to-jsx';
+import SliderControls from '../components/SliderControls';
+import { SIZES } from '../assets/styles';
 
 function AboutCompany() {
+  const aboutTitle = useSelector(state => state.settings.about_title);
+  const [sliderIndex, setSliderIndex] = useState(0);
+  const aboutDescription = useSelector(
+    state => state.settings.about_description
+  );
+  const advantages = useSelector(state => state.settings.advantages) || [];
+  const isMobileWidth = window.innerWidth <= SIZES.md;
   return (
     <section scroll-data="about" className={classes.about_company}>
       <div className="container">
         <div className={classes.row}>
           <div className={classes.col}>
-            <h2 className={cx('section_title', classes.title)}>
-              {content.title}
-            </h2>
-            {content.text.map((t, i) => (
-              <p key={i} className={classes.p}>
-                {t}
-              </p>
-            ))}
+            <h2 className={cx('section_title', classes.title)}>{aboutTitle}</h2>
+            <div className={classes.about_description}>
+              <RichText richText={aboutDescription} />
+            </div>
           </div>
           <div className={classes.col}>
             <div className={classes.items}>
-              {content.items.map((item, i) => (
-                <AdvantageItem
-                  key={i}
-                  icon={item.icon}
-                  title={item.title}
-                  description={item.description}
-                />
-              ))}
+              <SliderControls
+                onChange={i => setSliderIndex(i)}
+                length={advantages.length}
+              />
+              <div className={classes.items_wrapper}>
+                <div className={classes.advantage_items}>
+                  <div className={classes.carousel_wrapper}>
+                    <div
+                      className={classes.carousel}
+                      style={{
+                        transform: `translateX(-${(sliderIndex /
+                          (isMobileWidth ? 1 : advantages.length)) *
+                          100}%)`
+                      }}
+                    >
+                      {advantages.map((item, i) => (
+                        <div
+                          key={i}
+                          className={cx(
+                            classes.advantage_item_wrapper,
+                            i !== sliderIndex && classes.inactive_item
+                          )}
+                        >
+                          <AdvantageItem
+                            icon={item.photo.file.url}
+                            title={item.name}
+                            description={item.description}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -70,23 +73,82 @@ export default AboutCompany;
 const classes = {
   about_company: css`
     padding: 64px 0;
+    overflow: hidden;
   `,
   title: css`
     margin-bottom: 16px;
   `,
-  p: css`
-    font-size: 20px;
-    & + & {
-      margin-top: 16px;
+  about_description: css`
+    & p {
+      font-size: 20px;
+      @media screen and (max-width: ${SIZES.md}px) {
+        font-size: 16px;
+      }
+    }
+  `,
+  items_wrapper: css`
+    display: flex;
+    transition: 0.3s;
+    margin-top: 31px;
+    @media screen and (max-width: ${SIZES.md}px) {
+      margin-top: 20px;
+      display: block;
+    }
+  `,
+  inactive_item: css`
+    opacity: 0.4;
+    @media screen and (max-width: ${SIZES.md}px) {
+      padding-left: 15px !important;
+    }
+  `,
+  carousel: css`
+    display: flex;
+    transition: 0.3s;
+    align-items: center;
+  `,
+  carousel_wrapper: css`
+    overflow: hidden;
+    padding: 42px 21px;
+    @media screen and (max-width: ${SIZES.md}px) {
+      padding: 32px 15px;
+    }
+  `,
+  advantage_item_wrapper: css`
+    width: 580px;
+    padding: 0 21px;
+    @media screen and (max-width: ${SIZES.md}px) {
+      width: 100%;
+      min-width: 100%;
+      padding: 0;
+    }
+  `,
+  advantage_items: css`
+    display: flex;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(70, 16, 16, 0.4);
+    @media screen and (max-width: ${SIZES.md}px) {
+      border-radius: 0;
+      margin: 0 -15px;
     }
   `,
   row: css`
     display: flex;
+    @media screen and (max-width: ${SIZES.md}px) {
+      flex-direction: column;
+    }
   `,
   col: css`
     width: 50%;
+    @media screen and (max-width: ${SIZES.md}px) {
+      width: 100%;
+    }
   `,
   items: css`
-    padding-left: 100px;
+    padding-left: 30px;
+    @media screen and (max-width: ${SIZES.md}px) {
+      padding-left: 0;
+      margin-top: 32px;
+    }
   `
 };

@@ -1,15 +1,16 @@
 import { css } from 'linaria';
 import React from 'react';
+import { COLORS, SIZES } from '../assets/styles';
 
 function AdvantageItem({ icon, title, description }) {
   return (
     <div className={classes.item}>
-      <div className={classes.item_icon}>
+      <div className={classes.icon}>
         <img src={icon} alt="" />
       </div>
-      <div className={classes.item_content}>
-        <h3 className={classes.item_title}>{title}</h3>
-        <p className={classes.item_descrption}>{description}</p>
+      <div className={classes.content}>
+        <h3 className={classes.title}>{title}</h3>
+        <p className={classes.description}>{description}</p>
       </div>
     </div>
   );
@@ -23,30 +24,47 @@ const classes = {
     & + & {
       margin-top: 40px;
     }
+    @media screen and (max-width: ${SIZES.md}px) {
+      flex-direction: column;
+    }
   `,
   content: css`
-    padding-left: 38px;
+    padding-left: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    @media screen and (max-width: ${SIZES.md}px) {
+      padding-left: 0;
+      padding-top: 16px;
+    }
   `,
   title: css`
     font-size: 24px;
-    margin-top: 10px;
+    margin-bottom: 8px;
+    @media screen and (max-width: ${SIZES.md}px) {
+      font-size: 20px;
+    }
   `,
   description: css`
     font-size: 18px;
-    margin-top: 8px;
+    @media screen and (max-width: ${SIZES.md}px) {
+      font-size: 16px;
+    }
   `,
   icon: css`
-    height: 110px;
-    width: 110px;
-    min-width: 110px;
-    background-color: $purple;
+    height: 140px;
+    width: 140px;
+    min-width: 140px;
+    background-color: ${COLORS.purple};
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     & img {
-      width: 66px;
-      height: 66px;
+      width: 88px;
+      height: 88px;
+      object-fit: contain;
+      object-position: center;
     }
   `
 };

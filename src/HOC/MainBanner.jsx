@@ -4,6 +4,7 @@ import { scrollToSection } from '../utils';
 import { css, cx } from 'linaria';
 import { useSelector } from 'react-redux';
 import RichText from '@madebyconnor/rich-text-to-jsx';
+import { SIZES } from '../assets/styles';
 
 function MainBanner() {
   const loading = useSelector(state => state.settings.app_loading);
@@ -49,6 +50,10 @@ const classes = {
   title: css`
     font-size: 42px;
     margin-bottom: 16px;
+    @media screen and (max-width: ${SIZES.md}px) {
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
   `,
   container: css`
     position: relative;
@@ -58,9 +63,18 @@ const classes = {
       font-size: 24px;
     }
     font-size: 24px;
+    @media screen and (max-width: ${SIZES.md}px) {
+      & p {
+        font-size: 16px;
+      }
+      font-size: 16px;
+    }
   `,
   button: css`
     margin-top: 48px;
+    @media screen and (max-width: ${SIZES.md}px) {
+      margin-top: 32px;
+    }
   `,
   row: css`
     display: flex;
@@ -70,12 +84,17 @@ const classes = {
   `,
   col: css`
     width: 50%;
+    @media screen and (max-width: ${SIZES.md}px) {
+      width: 100%;
+    }
   `,
   banner: css`
     position: relative;
     background-color: #fff;
     padding: 82px 0;
-    padding-top: 159px;
+    @media screen and (max-width: ${SIZES.md}px) {
+      padding: 32px 0;
+    }
   `,
   image: css`
     position: absolute;
@@ -86,6 +105,13 @@ const classes = {
     object-fit: contain;
     object-position: 100% 80%;
     z-index: 0;
+    @media screen and (max-width: ${SIZES.md}px) {
+      width: 100%;
+      position: static;
+      max-width: 700px;
+      margin: 16px auto 0;
+      display: block;
+    }
   `,
   list: css`
     margin: 0;

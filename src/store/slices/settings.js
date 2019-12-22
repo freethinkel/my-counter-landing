@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getSettingsContentful } from '../api';
+import { selectService } from './ordering';
 
 const settingsSlice = createSlice({
   name: 'settings',
@@ -35,6 +36,16 @@ export const getAppSettingsAction = dispatch => () => {
       ...e.fields,
       photo: e.fields.photo.fields
     }));
+    _data.advantages = data.advantages.map(e => ({
+      ...e.fields,
+      photo: e.fields.photo.fields
+    }));
+    _data.faqs = data.faqs.map(e => e.fields);
+    _data.partners = data.partners.map(e => ({
+      ...e.fields,
+      photo: e.fields.photo.fields
+    }));
     dispatch(setSettingsData(_data));
+    dispatch(selectService(_data.services[0]));
   });
 };
