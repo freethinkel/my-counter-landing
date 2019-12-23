@@ -8,7 +8,7 @@ export const getAllCities = () => {
 };
 
 export const detectCity = () => {
-  return axios.get('http://ip-api.com/json?lang=ru').then(res => {
+  return axios.get('https://ip-api.com/json?lang=ru').then(res => {
     return res.data;
   });
 };
