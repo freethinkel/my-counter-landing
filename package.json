@@ -33,7 +33,7 @@
     "build": "craco build && react-snapshot",
     "test": "craco test",
     "eject": "craco eject",
-    "postinstall": "npm run build",
+    "herokupostinstall": "npm run build",
     "serve": "node server.js"
   },
   "eslintConfig": {
