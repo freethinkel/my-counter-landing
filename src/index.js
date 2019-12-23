@@ -7,8 +7,9 @@ import store from './store';
 import Routes from './Routes';
 import { initCitiesAction } from './store/slices/cities';
 import { getAppSettingsAction } from './store/slices/settings';
+import { render } from 'react-snapshot';
 
-ReactDOM.render(
+render(
   <Provider store={store}>
     <Bootstrap />
   </Provider>,
