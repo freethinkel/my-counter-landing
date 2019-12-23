@@ -5,10 +5,12 @@ import Footer from './Footer';
 import { css, cx } from 'linaria';
 import SliderControls from '../components/SliderControls';
 import Button from '../components/Button';
+import { useHistory } from 'react-router-dom';
 
 const Partners = () => {
   const partners = useSelector(state => state.settings.partners) || [];
   const [activeIndex, setIndex] = useState(0);
+  const history = useHistory();
   const activeSlide = partners[activeIndex] || {};
   return (
     <div className="page_wrapper">
@@ -17,7 +19,11 @@ const Partners = () => {
         <section className={classes.section}>
           <div className={classes.header}>
             <div className={cx('container', classes.header_container)}>
-              <Button className={classes.header_btn} color="primary">
+              <Button
+                className={classes.header_btn}
+                color="primary"
+                onClick={() => history.push('/')}
+              >
                 Вернуться
               </Button>
             </div>
