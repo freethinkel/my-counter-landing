@@ -1,12 +1,13 @@
 import React from 'react';
 import { cx, css } from 'linaria';
 
-const Skeleton = ({ width, height, variant }) => {
+const Skeleton = ({ width, height, margin, variant }) => {
   return (
     <div
       style={{
-        width: width,
-        height: height
+        width,
+        margin,
+        height
       }}
       className={cx(classes.wrapper, classes[variant])}
     ></div>

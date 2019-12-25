@@ -3,6 +3,7 @@ import { css } from 'linaria';
 import { COLORS, SIZES } from '../assets/styles';
 import Button from './Button';
 import { DatePipe } from '../helpers/datePipe';
+import Skeleton from './Skeleton';
 
 const ServiceCardDetails = ({
   title,
@@ -23,7 +24,11 @@ const ServiceCardDetails = ({
             <hr className={classes.hr} />
             <div className={classes.price_wrapper}>
               <div>Стоимость работ</div>
-              <b>от {price} руб.</b>
+              {!+price ? (
+                <Skeleton margin={0} height={24} width={50} />
+              ) : (
+                <b>от {+price} руб.</b>
+              )}
             </div>
           </div>
           <img className={classes.photo} src={photo} alt="" />
@@ -96,7 +101,7 @@ const classes = {
     padding-bottom: 0;
     display: flex;
     @media screen and (max-width: ${SIZES.md}px) {
-      padding: 24px 16px;
+      padding: 24px 16px 0;
       flex-direction: column;
     }
   `,

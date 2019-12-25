@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { css, cx } from 'linaria';
 import ServiceCard from '../components/ServiceCard';
 import ServiceCardDetails from '../components/ServiceCardDetails';
@@ -7,15 +7,30 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectService } from '../store/slices/ordering';
 import { scrollToSection } from '../utils';
 import { SIZES } from '../assets/styles';
+import {
+  getServiceDateAction,
+  setServicesPrice
+} from '../store/slices/settings';
 
 function Services() {
   const services = useSelector(state => state.settings.services) || [];
+  const currentCity = useSelector(state => state.cities.currentCity) || '';
+  const cities = useSelector(state => state.cities.cities) || [];
   const [currentIndex, setCurrentIndex] = useState(0);
   const dispatch = useDispatch();
   const setService = () => {
     scrollToSection('ordering');
     dispatch(selectService(services[currentIndex]));
   };
+  useEffect(() => {
+    if (services && currentCity && cities && cities.length) {
+      const findedCity = cities.find(
+        c => c.city.trim().toLowerCase() === currentCity.trim().toLowerCase()
+      );
+      getServiceDateAction(dispatch)(null, findedCity.id);
+      dispatch(setServicesPrice(findedCity.price_pov));
+    }
+  }, [services, currentCity, cities]);
   const currentService = services[currentIndex] || {};
   return (
     <section scroll-data="services" className={classes.section}>
@@ -60,7 +75,7 @@ function Services() {
                 title={currentService.name}
                 photo={currentService.photo?.file?.url}
                 price={currentService.price}
-                date={currentService.depart_date}
+                date={currentService.date}
                 description={currentService.description}
                 onEnroll={() => setService()}
               />
@@ -156,7 +171,7 @@ const classes = {
     display: flex;
     padding-top: 81px;
     @media screen and (max-width: ${SIZES.md}px) {
-      padding-top: 100px;
+      padding-top: 111px;
     }
   `,
   services: css`

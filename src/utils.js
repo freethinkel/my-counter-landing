@@ -9,7 +9,7 @@ export function scrollToElem(selector, offset) {
   let elem = document.querySelector(selector);
   if (elem) {
     let coord =
-      elem.getBoundingClientRect().top +
+      elem.getBoundingClientRect().top * 0.69 +
       (window.pageYOffset || document.body.scrollTop) -
       offset;
     smoothScrollTo(null, coord);

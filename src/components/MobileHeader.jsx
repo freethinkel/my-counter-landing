@@ -202,7 +202,7 @@ const classes = {
   burger_open: css`
     & span {
       &:nth-child(1) {
-        transform: rotate(-45deg) translate(-6px, 5px);
+        transform: rotate(-45deg) translate(-7px, 6px);
       }
       &:nth-child(3) {
         transform: rotate(45deg) translate(-6px, -5px);
