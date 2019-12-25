@@ -10,19 +10,9 @@ export const getAllCities = () => {
 export const detectCity = () => {
   // FIXME: http://api.ipstack.com//check?access_key=c6d1e3b4851f1ab8a550b8a55b6d1aeb&language=ru
 
-  return axios
-    .post('http://localhost:4000/proxy', {
-      method: 'GET',
-      url: 'http://ip-api.com/json?lang=ru'
-    })
-    .then(res => {
-      // return axios
-      //   .get(
-      //     'http://api.ipstack.com//check?access_key=c6d1e3b4851f1ab8a550b8a55b6d1aeb&language=ru'
-      //   )
-      // .then(res => {
-      return res.data;
-    });
+  return axios.get('https://poverka.herokuapp.com/geolocation').then(res => {
+    return res.data;
+  });
 };
 
 export const getServiceDate = (serviceId, cityId) => {

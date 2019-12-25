@@ -4,7 +4,7 @@ import Map from '../components/Map';
 import { cx, css } from 'linaria';
 import { COLORS, SIZES } from '../assets/styles';
 import { useSelector } from 'react-redux';
-import { phonePipe } from '../utils';
+import { phonePipe, defaultCity } from '../utils';
 
 export default function Contacts() {
   const city = useSelector(state => state.settings.company_city);
@@ -12,6 +12,18 @@ export default function Contacts() {
   const address = useSelector(state => state.settings.company_street);
   const schedule = useSelector(state => state.settings.schedule);
   const isMobileWidth = window.innerWidth <= 700;
+  const currentCityData = useSelector(state => state.cities.currentCityData);
+  const currentCity = useSelector(state => state.cities.currentCity);
+  let coord = [55, 49];
+  if (
+    (currentCity + '').toLowerCase().trim() !== defaultCity.toLowerCase().trim()
+  ) {
+    if (currentCityData.lat && currentCityData.lon) {
+      coord = [currentCityData.lat - 0.002, currentCityData.lon - 0.001];
+    }
+  }
+  let place = [...coord];
+  coord[0] = coord[0] + (isMobileWidth ? 0.001 : 0);
   return (
     <section scroll-data="contacts" className={classes.contacts}>
       <div className="container">
@@ -28,8 +40,8 @@ export default function Contacts() {
       </div>
       <div className={classes.map}>
         <Map
-          coord={[55.823307 + (isMobileWidth ? 0.001 : 0), 49.123536]}
-          placeCoord={[55.823307, 49.123536]}
+          coord={coord}
+          placeCoord={place}
           zoom={17}
           height={'100%'}
           icon={require('../assets/images/placemark.svg')}

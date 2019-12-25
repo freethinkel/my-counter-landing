@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getAllCities, detectCity, getServiceDate } from '../api';
 
-const defaultCity = 'Владимир';
+export const defaultCity = 'Владимир';
 
 const citiesSlice = createSlice({
   name: 'cities',
