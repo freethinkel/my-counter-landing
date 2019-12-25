@@ -23,7 +23,7 @@ function Services() {
     dispatch(selectService(services[currentIndex]));
   };
   useEffect(() => {
-    if (services && currentCity && cities && cities.length) {
+    if (services && services.length && currentCity && cities && cities.length) {
       const findedCity = cities.find(
         c => c.city.trim().toLowerCase() === currentCity.trim().toLowerCase()
       );

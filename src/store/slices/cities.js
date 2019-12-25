@@ -7,10 +7,14 @@ const citiesSlice = createSlice({
   name: 'cities',
   initialState: {
     currentCity: null,
+    currentCityData: {},
     cities: [],
     serviceDate: null
   },
   reducers: {
+    setCurrentCityData(state, action) {
+      state.currentCityData = action.payload;
+    },
     setCurrentCity(state, action) {
       state.currentCity = action.payload;
     },
@@ -24,7 +28,11 @@ const citiesSlice = createSlice({
   }
 });
 
-export const { setCurrentCity, setCities } = citiesSlice.actions;
+export const {
+  setCurrentCity,
+  setCities,
+  setCurrentCityData
+} = citiesSlice.actions;
 
 export default citiesSlice.reducer;
 
@@ -40,6 +48,7 @@ export const initCitiesAction = dispatch => {
             detectedCity.city.trim().toLowerCase()
         );
         dispatch(setCurrentCity(findedCity || defaultCity));
+        dispatch(setCurrentCityData(detectedCity));
       })
       .catch(err => {
         dispatch(setCurrentCity(defaultCity));
