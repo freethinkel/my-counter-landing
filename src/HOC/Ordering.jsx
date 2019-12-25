@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { cx, css } from 'linaria';
 import Select from '../components/Select';
 import Input from '../components/Input';
@@ -21,7 +21,7 @@ export default function Ordering() {
   const orderingState = useSelector(state => state.ordering);
   const services = useSelector(state => state.settings.services) || [];
   const pastDateBefore = orderingState.currentService
-    ? new Date(orderingState.currentService.depart_date)
+    ? new Date(orderingState.currentService.date)
     : null;
   const dispatch = useDispatch();
   const [errors, setErrors] = useState({
@@ -30,6 +30,10 @@ export default function Ordering() {
     address: { error: true, touched: false },
     date: { error: true, touched: false }
   });
+
+  useEffect(() => {
+    dispatch(setDepartDateOrdering(null));
+  }, [currentCity]);
   const _selectCity = i => {
     dispatch(setCurrentCity(cities[i].city));
   };

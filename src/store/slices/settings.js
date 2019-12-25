@@ -56,7 +56,6 @@ export const getAppSettingsAction = dispatch => () => {
       photo: e.fields.photo.fields
     }));
     dispatch(setSettingsData(_data));
-    dispatch(selectService(_data.services[0]));
   });
 };
 

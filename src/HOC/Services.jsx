@@ -18,10 +18,6 @@ function Services() {
   const cities = useSelector(state => state.cities.cities) || [];
   const [currentIndex, setCurrentIndex] = useState(0);
   const dispatch = useDispatch();
-  const setService = () => {
-    scrollToSection('ordering');
-    dispatch(selectService(services[currentIndex]));
-  };
   useEffect(() => {
     if (services && services.length && currentCity && cities && cities.length) {
       const findedCity = cities.find(
@@ -29,9 +25,14 @@ function Services() {
       );
       getServiceDateAction(dispatch)(null, findedCity.id);
       dispatch(setServicesPrice(findedCity.price_pov));
+      dispatch(selectService(services[0]));
     }
   }, [services, currentCity, cities]);
   const currentService = services[currentIndex] || {};
+  const setService = () => {
+    scrollToSection('ordering');
+    dispatch(selectService(services[currentIndex]));
+  };
   return (
     <section scroll-data="services" className={classes.section}>
       <div className="container">

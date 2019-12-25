@@ -11,6 +11,7 @@ import { cx, css } from 'linaria';
 import { useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import MobileHeader from './MobileHeader';
+import AnimatedLogo from './AnimatedLogo';
 
 const menus = [
   {
@@ -54,6 +55,7 @@ function Header() {
         <div className="container">
           <div className={classes.content}>
             <Link className={classes.logo} onClick={goToHome} to="/">
+              {/* <AnimatedLogo /> */}
               <img src={require('../assets/images/logo.svg')} alt="Логотип" />
             </Link>
             <SelectCity />

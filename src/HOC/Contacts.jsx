@@ -14,7 +14,7 @@ export default function Contacts() {
   const isMobileWidth = window.innerWidth <= 700;
   const currentCityData = useSelector(state => state.cities.currentCityData);
   const currentCity = useSelector(state => state.cities.currentCity);
-  let coord = [55, 49];
+  let coord = [56.140224, 40.382677];
   if (
     (currentCity + '').toLowerCase().trim() !== defaultCity.toLowerCase().trim()
   ) {
