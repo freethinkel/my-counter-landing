@@ -7,20 +7,27 @@ import Ordering from './HOC/Ordering';
 import Faq from './HOC/Faq';
 import Contacts from './HOC/Contacts';
 import Footer from './HOC/Footer';
+import ScrollAnimation from 'react-animate-on-scroll';
 
 function App() {
   return (
     <div className="page_wrapper">
       <Header />
       <div className="page">
-        <MainBanner />
-        <Services />
-        <Ordering />
-        <AboutCompany />
-        <Faq />
+        <ScrollAnimation animateOnce={true} animateIn="fadeIn">
+          <MainBanner />
+        </ScrollAnimation>
+        <ScrollAnimation animateOnce={true} animateIn="fadeIn">
+          <Services />
+        </ScrollAnimation>
+        <ScrollAnimation animateOnce={true} animateIn="fadeIn">
+          <Ordering />
+          <AboutCompany />
+          <Faq />
+        </ScrollAnimation>
         <Contacts />
-        {/* <Promo /> */}
         <Footer />
+        {/* <Promo /> */}
       </div>
     </div>
   );

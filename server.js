@@ -9,7 +9,6 @@ const requestIp = require('request-ip');
 app.use(express.static(path.join(__dirname, 'build')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(requestIp.mv());
 app.use(cors());
 
 app.get('/geolocation', (req, res) => {

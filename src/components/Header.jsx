@@ -55,8 +55,8 @@ function Header() {
         <div className="container">
           <div className={classes.content}>
             <Link className={classes.logo} onClick={goToHome} to="/">
-              {/* <AnimatedLogo /> */}
-              <img src={require('../assets/images/logo.svg')} alt="Логотип" />
+              <AnimatedLogo />
+              {/* <img src={require('../assets/images/logo.svg')} alt="Логотип" /> */}
             </Link>
             <SelectCity />
             <PhoneView
