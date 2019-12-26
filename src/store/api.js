@@ -15,6 +15,18 @@ export const detectCity = () => {
   });
 };
 
+export const geoCodeFromCity = city => {
+  return axios
+    .get(
+      `https://geocode-maps.yandex.ru/1.x/?format=json&apikey=e4628a39-f3e2-48af-bee1-371f77c27de9&geocode=${city}`
+    )
+    .then(res =>
+      res.data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos
+        .split(' ')
+        .map(e => +e)
+    );
+};
+
 export const getServiceDate = (serviceId, cityId) => {
   return axios
     .get(`https://itl33.ru/b24/poverka/get_date.php?city_id=${cityId}`)

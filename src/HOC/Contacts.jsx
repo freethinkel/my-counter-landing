@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 // import classes from './Contacts.module.scss';
 import Map from '../components/Map';
 import { cx, css } from 'linaria';
 import { COLORS, SIZES } from '../assets/styles';
 import { useSelector } from 'react-redux';
 import { phonePipe, defaultCity } from '../utils';
+import { geoCodeFromCity } from '../store/api';
+import { useDispatch } from 'react-redux';
+import { setCurrentGeocode } from '../store/slices/cities';
 
 export default function Contacts() {
   const city = useSelector(state => state.settings.company_city);
@@ -14,25 +17,45 @@ export default function Contacts() {
   const isMobileWidth = window.innerWidth <= 700;
   const currentCityData = useSelector(state => state.cities.currentCityData);
   const currentCity = useSelector(state => state.cities.currentCity);
+  const currentGeocode = useSelector(state => state.cities.currentGeocode);
   let coord = [56.140224, 40.382677];
-  if (
-    (currentCity + '').toLowerCase().trim() !== defaultCity.toLowerCase().trim()
-  ) {
-    if (currentCityData.lat && currentCityData.lon) {
-      coord = [currentCityData.lat - 0.002, currentCityData.lon - 0.001];
-    }
-  }
   let place = [...coord];
+  if (
+    (currentCity + '').toLowerCase().trim() !==
+      defaultCity.toLowerCase().trim() &&
+    currentGeocode
+  ) {
+    if (currentGeocode.lat && currentGeocode.lon) {
+      coord = [currentGeocode.lat - 0.002, currentGeocode.lon - 0.001];
+    }
+    place = null;
+  }
+
   coord[0] = coord[0] + (isMobileWidth ? 0.001 : 0);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setCurrentGeocode(null));
+    geoCodeFromCity(currentCity).then(data => {
+      let _geo = {
+        lon: data[0],
+        lat: data[1]
+      };
+      dispatch(setCurrentGeocode(_geo));
+    });
+  }, [currentCity]);
   return (
     <section scroll-data="contacts" className={classes.contacts}>
       <div className="container">
         <div className={classes.card}>
           <h2 className={cx('section_title', classes.title)}>Контакты</h2>
-          <div className={classes.city}>{city}</div>
-          <div className={classes.street}>{address}</div>
-          <div className={classes.schedule}>График работы:</div>
-          <div className={classes.schedule_value}>{schedule}</div>
+          {place && (
+            <>
+              <div className={classes.city}>{city}</div>
+              <div className={classes.street}>{address}</div>
+              <div className={classes.schedule}>График работы:</div>
+              <div className={classes.schedule_value}>{schedule}</div>
+            </>
+          )}
           <a className={classes.phone} href={'tel:' + phone}>
             {phonePipe(phone)}
           </a>
@@ -40,7 +63,11 @@ export default function Contacts() {
       </div>
       <div className={classes.map}>
         <Map
-          coord={coord}
+          state={{
+            center: coord,
+            zoom: 17
+          }}
+          // coord={coord}
           placeCoord={place}
           zoom={17}
           height={'100%'}

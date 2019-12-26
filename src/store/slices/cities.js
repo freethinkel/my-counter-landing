@@ -9,9 +9,13 @@ const citiesSlice = createSlice({
     currentCity: null,
     currentCityData: {},
     cities: [],
-    serviceDate: null
+    serviceDate: null,
+    currentGeocode: null
   },
   reducers: {
+    setCurrentGeocode(state, action) {
+      state.currentGeocode = action.payload;
+    },
     setCurrentCityData(state, action) {
       state.currentCityData = action.payload;
     },
@@ -31,7 +35,8 @@ const citiesSlice = createSlice({
 export const {
   setCurrentCity,
   setCities,
-  setCurrentCityData
+  setCurrentCityData,
+  setCurrentGeocode
 } = citiesSlice.actions;
 
 export default citiesSlice.reducer;

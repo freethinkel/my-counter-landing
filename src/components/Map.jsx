@@ -9,16 +9,20 @@ export default function Map({
   state,
   height = 100
 }) {
+  const onLoad = api => {
+    console.log(api);
+  };
   return (
     <YMaps>
       <YMap
+        onLoad={onLoad}
         width="100%"
         height={height}
         state={state}
-        defaultState={{
-          center: state ? state : coord,
-          zoom
-        }}
+        // defaultState={{
+        //   center: state ? state : coord,
+        //   zoom
+        // }}
       >
         <Placemark
           options={{
