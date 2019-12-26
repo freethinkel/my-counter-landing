@@ -82,6 +82,7 @@ const classes = {
   contacts: css`
     position: relative;
     padding: 100px 0;
+    min-height: 663px;
     @media screen and (max-width: ${SIZES.md}px) {
       padding: 35px 0 430px;
     }
