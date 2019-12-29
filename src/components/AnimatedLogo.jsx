@@ -1,12 +1,12 @@
 import React from 'react';
-import { css } from 'linaria';
+import { css, cx } from 'linaria';
 import { COLORS } from '../assets/styles';
 
-const AnimatedLogo = () => {
+const AnimatedLogo = ({ isMobile }) => {
   return (
-    <div className={classes.wrapper}>
-      <div className={classes.numbers_wrapper}>
-        <div className={classes.numbers}>
+    <div className={cx(classes.wrapper, isMobile && classes.mobile_wrapper)}>
+      <div className={cx(classes.numbers_wrapper, 'numbers_wrapper')}>
+        <div className={cx(classes.numbers, 'numbers')}>
           {new Array(10).fill(0).map((e, i) => (
             <span key={i}>{i}</span>
           ))}
@@ -77,6 +77,20 @@ const classes = {
       to {
         transform: translateY(-50%);
       }
+    }
+  `,
+  mobile_wrapper: css`
+    height: 43px;
+    & .numbers {
+      transform: translateY(-132px);
+    }
+    & .numbers_wrapper {
+      left: 14px;
+      height: 42px;
+    }
+    & span {
+      font-size: 15px;
+      line-height: 15px;
     }
   `
 };

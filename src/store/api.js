@@ -33,6 +33,16 @@ export const getServiceDate = (serviceId, cityId) => {
     .then(res => res.data);
 };
 
+export const sendLeadToBitrix = model => {
+  return axios.post(
+    `https://energo-m.bitrix24.ru/rest/104/v226w7v0iabush5s/crm.lead.add`,
+    model
+  );
+  return new Promise((rslv, rjct) => {
+    setTimeout(rslv, 2000);
+  });
+};
+
 // export const getServiceDate = (serviceId, cityId) => {
 // return axios
 //   .post(

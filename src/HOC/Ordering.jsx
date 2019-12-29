@@ -48,7 +48,7 @@ export default function Ordering() {
   };
   const onSubmit = e => {
     e.preventDefault();
-    sendNewOrderAction(dispatch)({});
+    sendNewOrderAction(dispatch)({ ...orderingState, city: currentCity });
     console.log(errors);
   };
   const isValid = () =>

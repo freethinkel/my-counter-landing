@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { sendLeadToBitrix } from '../api';
+import { DatePipe } from '../../helpers/datePipe';
 
 const orderingSlice = createSlice({
   name: 'ordering',
@@ -56,9 +58,47 @@ export default orderingSlice.reducer;
 
 export const sendNewOrderAction = dispatch => model => {
   dispatch(setOrderingLoading(true));
-  setTimeout(() => {
-    dispatch(setOrderingLoading(false));
-    dispatch(setOrderingSuccess(true));
-  }, 2000);
+  let _model = {
+    fields: {
+      NAME: model.name,
+      STATUS_ID: 'NEW',
+      OPENED: 'Y',
+      PHONE: [{ VALUE: model.phoneNumber, VALUE_TYPE: 'WORK' }],
+      OPPORTUNITY: model.currentService.price,
+      TITLE: `Заявка с сайта - ${model.currentService.description}`,
+      ADDRESS_CITY: model.city,
+      ADDRESS: model.address,
+      HAS_PHONE: 'Y',
+      SOURCE_DESCRIPTION: 'Заявка с сайта "Мой счетчик"',
+      COMMENTS: `Выбранная дата выезда ${new DatePipe(
+        model.currentService.date
+      ).getLongDate()}`
+    }
+  };
+  // fields:
+  // 	{
+  // 		"TITLE": "ИП Титов",
+  // 		"NAME": "Глеб",
+  // 		"SECOND_NAME": "Егорович",
+  // 		"LAST_NAME": "Титов",
+  // 		"STATUS_ID": "NEW",
+  // 		"OPENED": "Y",
+  // 		"ASSIGNED_BY_ID": 1,
+  // 		"CURRENCY_ID": "USD",
+  // 		"OPPORTUNITY": 12500,
+  // 		"PHONE": [ { "VALUE": "555888", "VALUE_TYPE": "WORK" } ]
+  // 	},
+  // 	params: { "REGISTER_SONET_EVENT": "Y" }
+  sendLeadToBitrix(_model)
+    .then(data => {
+      dispatch(setOrderingSuccess(true));
+    })
+    .catch(err => {
+      dispatch(setOrderingError(true));
+    })
+    .finally(() => {
+      dispatch(setOrderingLoading(false));
+    });
+  setTimeout(() => {}, 2000);
   // axios.get
 };

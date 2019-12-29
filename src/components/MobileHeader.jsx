@@ -5,6 +5,7 @@ import SelectCity from './SelectCity';
 import { scrollToSection, phonePipe } from '../utils';
 import { useSelector } from 'react-redux';
 import { COLORS } from '../assets/styles';
+import AnimatedLogo from './AnimatedLogo';
 
 const menus = [
   {
@@ -39,7 +40,8 @@ const MobileHeader = ({ className }) => {
         <div className={cx('container', classes.container)}>
           <Burger onClick={() => setIsOpen(!isOpen)} state={isOpen} />
           <Link to="/" className={classes.logo}>
-            <img src={require('../assets/images/logo.svg')} alt="" />
+            {/* <img src={require('../assets/images/logo.svg')} alt="" /> */}
+            <AnimatedLogo isMobile />
           </Link>
         </div>
       </div>
