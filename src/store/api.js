@@ -2,17 +2,27 @@ import axios from 'axios';
 import { createClient } from 'contentful';
 
 export const getAllCities = () => {
-  return axios.get('https://itl33.ru/b24/poverka/get_cities.php').then(res => {
-    return res.data || [];
-  });
+  return axios
+    .get('https://itl33.ru/b24/poverka/get_cities.php')
+    .then(res => {
+      return res.data || [];
+    })
+    .catch(err => {
+      console.log(err);
+    });
 };
 
 export const detectCity = () => {
   // FIXME: http://api.ipstack.com//check?access_key=c6d1e3b4851f1ab8a550b8a55b6d1aeb&language=ru
 
-  return axios.get('https://poverka.herokuapp.com/geolocation').then(res => {
-    return res.data;
-  });
+  return axios
+    .get('/geolocation.php')
+    .then(res => {
+      return res.data;
+    })
+    .catch(err => {
+      console.log(err);
+    });
 };
 
 export const geoCodeFromCity = city => {
@@ -24,23 +34,30 @@ export const geoCodeFromCity = city => {
       res.data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos
         .split(' ')
         .map(e => +e)
-    );
+    )
+    .catch(err => {
+      console.log(err);
+    });
 };
 
 export const getServiceDate = (serviceId, cityId) => {
   return axios
     .get(`https://itl33.ru/b24/poverka/get_date.php?city_id=${cityId}`)
-    .then(res => res.data);
+    .then(res => res.data)
+    .catch(err => {
+      console.log(err);
+    });
 };
 
 export const sendLeadToBitrix = model => {
-  return axios.post(
-    `https://energo-m.bitrix24.ru/rest/104/v226w7v0iabush5s/crm.lead.add`,
-    model
-  );
-  return new Promise((rslv, rjct) => {
-    setTimeout(rslv, 2000);
-  });
+  return axios
+    .post(
+      `https://energo-m.bitrix24.ru/rest/104/v226w7v0iabush5s/crm.lead.add`,
+      model
+    )
+    .catch(err => {
+      console.log(err);
+    });
 };
 
 // export const getServiceDate = (serviceId, cityId) => {
@@ -84,7 +101,10 @@ export const sendLeadToBitrix = model => {
 export const getSettingsContentful = () => {
   return cful
     .getEntries({ content_type: 'settings', include: 4 })
-    .then(d => d.items[0].fields);
+    .then(d => d.items[0].fields)
+    .catch(err => {
+      console.log(err);
+    });
 };
 
 export const cful = createClient({
