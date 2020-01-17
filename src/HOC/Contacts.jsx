@@ -48,6 +48,7 @@ export default function Contacts() {
       <div className="container">
         <div className={classes.card}>
           <h2 className={cx('section_title', classes.title)}>Контакты</h2>
+          {!place && <div className={classes.city}>г. {currentCity}</div>}
           {place && (
             <>
               <div className={classes.city}>{city}</div>

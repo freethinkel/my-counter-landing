@@ -15,12 +15,12 @@ import AnimatedLogo from './AnimatedLogo';
 
 const menus = [
   {
-    title: 'О компании',
-    url: 'about'
-  },
-  {
     title: 'Услуги',
     url: 'services'
+  },
+  {
+    title: 'О компании',
+    url: 'about'
   },
   {
     title: 'Знаете ли вы',
@@ -42,7 +42,7 @@ function Header() {
     }
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
-  }, [scrollPos]);
+  }, []);
 
   const history = useHistory();
   const goToHome = e => {
@@ -96,9 +96,9 @@ function Menu({ scrollPos }) {
     const headerSize = getHeaderSize();
     if (section) {
       triggers[el.url] =
-        section.offsetTop - headerSize < scrollPos + window.innerHeight / 2 &&
-        section.offsetTop - headerSize + section.offsetHeight >
-          scrollPos + window.innerHeight / 2;
+        scrollPos / 0.69 + headerSize < section.offsetTop &&
+        scrollPos / 0.69 + window.innerHeight / 0.69 >
+          section.offsetTop + section.offsetHeight;
     }
   });
   return (

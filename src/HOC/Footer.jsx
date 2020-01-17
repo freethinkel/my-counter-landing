@@ -97,7 +97,7 @@ function PhoneView({ phone }) {
 }
 
 function Copyright() {
-  return <div className={classes.copyright}>© 2016 Мой счетчик</div>;
+  return <div className={classes.copyright}>© 2020 Мой счетчик</div>;
 }
 
 function Menu() {

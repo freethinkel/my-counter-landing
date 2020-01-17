@@ -1,8 +1,12 @@
 export const defaultCity = 'Владимир';
 
 export const getHeaderSize = () => {
-  const header = document.querySelector('header');
-  return (header && header.offsetHeight) || 105;
+  // const header = document.querySelector('header > div');
+  let size = 98;
+  if (window.innerWidth <= 1000) {
+    size = 78;
+  }
+  return size;
 };
 
 export function scrollToElem(selector, offset) {

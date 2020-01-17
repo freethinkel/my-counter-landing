@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import RichText from '@madebyconnor/rich-text-to-jsx';
 import SliderControls from '../components/SliderControls';
 import { SIZES } from '../assets/styles';
+import SwipeableViews from 'react-swipeable-views';
 
 function AboutCompany() {
   const aboutTitle = useSelector(state => state.settings.about_title);
@@ -35,27 +36,34 @@ function AboutCompany() {
                   <div className={classes.carousel_wrapper}>
                     <div
                       className={classes.carousel}
-                      style={{
-                        transform: `translateX(-${(sliderIndex /
-                          (isMobileWidth ? 1 : advantages.length)) *
-                          100}%)`
-                      }}
+                      // style={{
+                      //   transform:
+                      //     !isMobileWidth &&
+                      //     `translateX(-${(sliderIndex /
+                      //       (isMobileWidth ? 1 : advantages.length)) *
+                      //       100}%)`
+                      // }}
                     >
-                      {advantages.map((item, i) => (
-                        <div
-                          key={i}
-                          className={cx(
-                            classes.advantage_item_wrapper,
-                            i !== sliderIndex && classes.inactive_item
-                          )}
-                        >
-                          <AdvantageItem
-                            icon={item.photo.file.url}
-                            title={item.name}
-                            description={item.description}
-                          />
-                        </div>
-                      ))}
+                      <SwipeableViews
+                        index={sliderIndex}
+                        onSwitching={i => setSliderIndex(i)}
+                      >
+                        {advantages.map((item, i) => (
+                          <div
+                            key={i}
+                            className={cx(
+                              classes.advantage_item_wrapper,
+                              i !== sliderIndex && classes.inactive_item
+                            )}
+                          >
+                            <AdvantageItem
+                              icon={item.photo.file.url}
+                              title={item.name}
+                              description={item.description}
+                            />
+                          </div>
+                        ))}
+                      </SwipeableViews>
                     </div>
                   </div>
                 </div>

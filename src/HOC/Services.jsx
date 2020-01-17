@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectService } from '../store/slices/ordering';
 import { scrollToSection } from '../utils';
 import { SIZES } from '../assets/styles';
+import SwipeableViews from 'react-swipeable-views';
 import {
   getServiceDateAction,
   setServicesPrice
@@ -72,14 +73,25 @@ function Services() {
                   length={services.length}
                 />
               </div>
-              <ServiceCardDetails
-                title={currentService.name}
-                photo={currentService.photo?.file?.url}
-                price={currentService.price}
-                date={currentService.date}
-                description={currentService.description}
-                onEnroll={() => setService()}
-              />
+              <SwipeableViews
+                index={currentIndex}
+                style={{ margin: '-10px' }}
+                // enableMouseEvents
+                onSwitching={i => setCurrentIndex(i)}
+              >
+                {services.map(_service => (
+                  <div className={classes.slider_detail}>
+                    <ServiceCardDetails
+                      title={_service.name}
+                      photo={_service.photo?.file?.url}
+                      price={_service.price}
+                      date={_service.date}
+                      description={_service.description}
+                      onEnroll={() => setService()}
+                    />
+                  </div>
+                ))}
+              </SwipeableViews>
             </div>
             <div
               className={cx(classes.items_wrapper, classes.items_wrapper_right)}
@@ -127,6 +139,9 @@ const classes = {
   `,
   header: css`
     width: 50%;
+  `,
+  slider_detail: css`
+    padding: 10px;
   `,
   section: css`
     padding: 48px 0 64px;

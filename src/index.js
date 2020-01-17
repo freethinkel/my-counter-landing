@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import ReactDOM from 'react-dom';
+// import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 import { Provider, useDispatch } from 'react-redux';
@@ -24,8 +24,14 @@ serviceWorker.unregister();
 function Bootstrap() {
   const dispatch = useDispatch();
   useEffect(() => {
-    initCitiesAction(dispatch);
-    getAppSettingsAction(dispatch)();
-  }, []);
+    try {
+      if (dispatch) {
+        initCitiesAction(dispatch);
+        getAppSettingsAction(dispatch)();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }, [dispatch]);
   return <Routes />;
 }

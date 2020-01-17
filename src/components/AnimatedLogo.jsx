@@ -7,12 +7,27 @@ const AnimatedLogo = ({ isMobile }) => {
     <div className={cx(classes.wrapper, isMobile && classes.mobile_wrapper)}>
       <div className={cx(classes.numbers_wrapper, 'numbers_wrapper')}>
         <div className={cx(classes.numbers, 'numbers')}>
-          {new Array(10).fill(0).map((e, i) => (
-            <span key={i}>{i}</span>
-          ))}
-          {new Array(10).fill(0).map((e, i) => (
-            <span key={i}>{i}</span>
-          ))}
+          {new Array(10)
+            .fill(0)
+            .map((e, i) => i)
+            .reverse()
+            .map(e => (
+              <span key={e}>{e}</span>
+            ))}
+          {new Array(10)
+            .fill(0)
+            .map((e, i) => i)
+            .reverse()
+            .map(e => (
+              <span key={e}>{e}</span>
+            ))}
+          {new Array(10)
+            .fill(0)
+            .map((e, i) => i)
+            .reverse()
+            .map(e => (
+              <span key={e}>{e}</span>
+            ))}
         </div>
       </div>
       <img src={require('../assets/images/logo_number.svg')} alt="" />
@@ -60,7 +75,7 @@ const classes = {
     }
   `,
   numbers: css`
-    transform: translateY(-225px);
+    transform: translateY(-200px);
     animation: numbers 1.3s 5 linear;
     & span {
       color: ${COLORS.primary};
@@ -72,17 +87,18 @@ const classes = {
     }
     @keyframes numbers {
       from {
-        transform: translateY(0);
+        transform: translateY(-446px);
       }
       to {
-        transform: translateY(-50%);
+        transform: translateY(-200px);
       }
     }
   `,
   mobile_wrapper: css`
     height: 43px;
     & .numbers {
-      transform: translateY(-132px);
+      transform: translateY(-117px);
+      animation: numbers-mobile 1.3s 5 linear;
     }
     & .numbers_wrapper {
       left: 14px;
@@ -91,6 +107,15 @@ const classes = {
     & span {
       font-size: 15px;
       line-height: 15px;
+    }
+
+    @keyframes numbers-mobile {
+      from {
+        transform: translateY(-262px);
+      }
+      to {
+        transform: translateY(-117px);
+      }
     }
   `
 };

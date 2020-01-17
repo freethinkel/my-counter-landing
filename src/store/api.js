@@ -12,9 +12,33 @@ export const getAllCities = () => {
     });
 };
 
+export const getRegionsRequest = () => {
+  return axios
+    .get('https://itl33.ru/b24/poverka/get_regions.php')
+    .then(res => res.data || []);
+};
+
 export const detectCity = () => {
   // FIXME: http://api.ipstack.com//check?access_key=c6d1e3b4851f1ab8a550b8a55b6d1aeb&language=ru
-
+  // return new Promise((rslv, rjct) => {
+  //   let data = {
+  //     status: 'success',
+  //     country: 'Россия',
+  //     countryCode: 'RU',
+  //     region: 'TA',
+  //     regionName: 'Татарстан',
+  //     city: 'Владимир',
+  //     zip: '422528',
+  //     lat: 55.7666,
+  //     lon: 49.1686,
+  //     timezone: 'Europe/Moscow',
+  //     isp: 'Teleset Company. City of Kazan.',
+  //     org: 'Teleset LLC',
+  //     as: 'AS24810 PJSC Rostelecom',
+  //     query: '87.117.168.126'
+  //   };
+  //   rslv(data);
+  // });
   return axios
     .get('/geolocation.php')
     .then(res => {

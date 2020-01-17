@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 // import classes from './SelectCity.module.scss';
 import CustomSelector from './CustomSelector';
@@ -7,23 +7,43 @@ import { css } from 'linaria';
 import { setCurrentCity } from '../store/slices/cities';
 import { useDispatch } from 'react-redux';
 import { SIZES } from '../assets/styles';
+import MultiSelect from './MultiSelect';
 
 export default function SelectCity() {
   const selectedCity = useSelector(state => state.cities.currentCity);
-  const cities = useSelector(state => state.cities.cities);
+  const [regions, setRegions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const _cities = useSelector(state => state.cities.cities);
+  const _regions = useSelector(state => state.cities.regions);
   const dispatch = useDispatch();
+  useEffect(() => {
+    if (_cities && _cities.length && _regions && _regions.length) {
+      setLoading(false);
+      setRegions(
+        _regions.map(r => ({
+          title: r.region,
+          value: r.id,
+          isTarget: false,
+          children: (_cities || [])
+            .filter(c => c.r_id === r.id)
+            .map(c => ({ title: c.city, value: c.id, isTarget: true }))
+        }))
+      );
+    }
+  }, [_cities, _regions]);
   const selectCity = i => {
-    dispatch(setCurrentCity(cities[i].city));
+    let city = i;
+    dispatch(setCurrentCity(city));
   };
   return (
     <div className={classes.wrapper}>
-      {!(cities && cities.length) && <Skeleton height={24} />}
-      {!!(cities && cities.length) && (
-        <CustomSelector
+      {loading && <Skeleton height={24} />}
+      {!loading && (
+        <MultiSelect
           label="Ваш город"
           value={selectedCity}
           onSelect={i => selectCity(i)}
-          options={cities.map(c => c.city)}
+          options={regions}
         />
       )}
     </div>
