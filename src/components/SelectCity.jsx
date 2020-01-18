@@ -8,9 +8,12 @@ import { setCurrentCity } from '../store/slices/cities';
 import { useDispatch } from 'react-redux';
 import { SIZES } from '../assets/styles';
 import MultiSelect from './MultiSelect';
+import SureCity from './ SureCity';
 
 export default function SelectCity() {
   const selectedCity = useSelector(state => state.cities.currentCity);
+  const [isOpenSelector, setIsOpenSelector] = useState(false);
+  const [openedSureCity, setSureCityOpened] = useState(true);
   const [regions, setRegions] = useState([]);
   const [loading, setLoading] = useState(true);
   const _cities = useSelector(state => state.cities.cities);
@@ -31,10 +34,13 @@ export default function SelectCity() {
       );
     }
   }, [_cities, _regions]);
-  const selectCity = i => {
-    let city = i;
-    dispatch(setCurrentCity(city));
+  const selectCity = e => {
+    dispatch(setCurrentCity(e.title));
   };
+  const showSureCity =
+    !isOpenSelector &&
+    openedSureCity &&
+    !window?.localStorage?.getItem('sureCityState');
   return (
     <div className={classes.wrapper}>
       {loading && <Skeleton height={24} />}
@@ -42,8 +48,30 @@ export default function SelectCity() {
         <MultiSelect
           label="Ваш город"
           value={selectedCity}
-          onSelect={i => selectCity(i)}
+          opened={isOpenSelector}
+          onSelect={e => {
+            selectCity(e);
+            if (window.localStorage) {
+              window.localStorage.setItem('sureCityState', true);
+            }
+          }}
           options={regions}
+        />
+      )}
+      {showSureCity && (
+        <SureCity
+          onYes={() => {
+            setIsOpenSelector(false);
+            if (window.localStorage) {
+              window.localStorage.setItem('sureCityState', true);
+            }
+            setSureCityOpened(false);
+          }}
+          onNo={() => {
+            setIsOpenSelector(true);
+            setSureCityOpened(false);
+          }}
+          city={selectedCity}
         />
       )}
     </div>

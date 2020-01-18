@@ -6,6 +6,7 @@ import { css, cx } from 'linaria';
 import SliderControls from '../components/SliderControls';
 import Button from '../components/Button';
 import { useHistory } from 'react-router-dom';
+import SwipeableViews from 'react-swipeable-views';
 
 const Partners = () => {
   const partners = useSelector(state => state.settings.partners) || [];
@@ -38,19 +39,25 @@ const Partners = () => {
                   length={partners.length}
                 />
               </div>
-              <div className={classes.slide_active}>
-                <h2 className={classes.active_slide_title}>
-                  {activeSlide.name}
-                </h2>
-                <p className={classes.active_slide_description}>
-                  {activeSlide.description}
-                </p>
-                <img
-                  className={classes.active_slide_img}
-                  src={activeSlide.photo?.file?.url}
-                  alt=""
-                />
-              </div>
+              <SwipeableViews
+                index={activeIndex}
+                style={{ margin: '-12px' }}
+                onSwitching={i => setIndex(i)}
+              >
+                {(partners || []).map((p, i) => (
+                  <div key={i} className={classes.slide_active}>
+                    <h2 className={classes.active_slide_title}>{p.name}</h2>
+                    <p className={classes.active_slide_description}>
+                      {p.description}
+                    </p>
+                    <img
+                      className={classes.active_slide_img}
+                      src={p.photo?.file?.url}
+                      alt=""
+                    />
+                  </div>
+                ))}
+              </SwipeableViews>
             </div>
             <div className={classes.other_slides}>
               {partners
@@ -125,6 +132,7 @@ const classes = {
   `,
   slide_active: css`
     border-radius: 10px;
+    margin: 12px;
     background-color: #fff;
     box-shadow: 0px 4px 10px rgba(70, 16, 16, 0.4);
     padding: 38px;

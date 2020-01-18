@@ -47,6 +47,11 @@ function Header() {
   const history = useHistory();
   const goToHome = e => {
     scrollToElem('body', 0);
+    document.querySelector(
+      'header a .numbers'
+    ).style.animation = document.querySelector(
+      'header a .numbers'
+    ).style.animation;
   };
 
   return (

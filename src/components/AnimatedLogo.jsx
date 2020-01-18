@@ -3,8 +3,18 @@ import { css, cx } from 'linaria';
 import { COLORS } from '../assets/styles';
 
 const AnimatedLogo = ({ isMobile }) => {
+  const reAnimate = () => {
+    const numbers = document.querySelector('header a .numbers');
+    numbers.style.display = 'none';
+    setTimeout(() => {
+      numbers.style.display = 'block';
+    }, 100);
+  };
   return (
-    <div className={cx(classes.wrapper, isMobile && classes.mobile_wrapper)}>
+    <div
+      className={cx(classes.wrapper, isMobile && classes.mobile_wrapper)}
+      onClick={reAnimate}
+    >
       <div className={cx(classes.numbers_wrapper, 'numbers_wrapper')}>
         <div className={cx(classes.numbers, 'numbers')}>
           {new Array(10)

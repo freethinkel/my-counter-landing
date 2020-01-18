@@ -79,8 +79,8 @@ function Services() {
                 // enableMouseEvents
                 onSwitching={i => setCurrentIndex(i)}
               >
-                {services.map(_service => (
-                  <div className={classes.slider_detail}>
+                {services.map((_service, i) => (
+                  <div className={classes.slider_detail} key={i}>
                     <ServiceCardDetails
                       title={_service.name}
                       photo={_service.photo?.file?.url}

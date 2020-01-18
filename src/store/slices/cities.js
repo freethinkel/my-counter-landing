@@ -6,7 +6,8 @@ import {
   getRegionsRequest
 } from '../api';
 
-export const defaultCity = 'Владимир';
+export const defaultCity =
+  window?.localStorage?.getItem('currentCity') || 'Владимир';
 
 const citiesSlice = createSlice({
   name: 'cities',
@@ -29,6 +30,9 @@ const citiesSlice = createSlice({
       state.currentCityData = action.payload;
     },
     setCurrentCity(state, action) {
+      if (window.localStorage) {
+        window.localStorage.setItem('currentCity', action.payload);
+      }
       state.currentCity = action.payload;
     },
     setServiceDate(state, action) {

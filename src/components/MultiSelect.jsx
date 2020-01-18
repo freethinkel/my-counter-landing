@@ -1,28 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { css, cx } from 'linaria';
+import ClickOutside from './ClickOutside';
+import { SIZES } from '../assets/styles';
 
-const MultiSelect = ({ options, label, value, onSelect }) => {
-  console.log(options);
+const MultiSelect = ({ options, label, value, onSelect, opened }) => {
+  useEffect(() => {
+    setIsOpen(!!opened);
+  }, [opened]);
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <div className={classes.wrapper} onClick={() => setIsOpen(!isOpen)}>
-      <div className={classes.placeholder}>
-        <img
-          className={cx(classes.arrow, isOpen && classes.arrow_open)}
-          src={require('../assets/images/arrow-down.svg')}
-          alt=""
-        />
-        <span>{label}</span>
+    <ClickOutside onClickOutside={() => isOpen && setIsOpen(false)}>
+      <div className={classes.wrapper} onClick={() => setIsOpen(!isOpen)}>
+        <div className={classes.placeholder}>
+          <img
+            className={cx(classes.arrow, isOpen && classes.arrow_open)}
+            src={require('../assets/images/arrow-down.svg')}
+            alt=""
+          />
+          <span>{label}</span>
+        </div>
+        <div className={classes.value}>{value}</div>
+        <div className={cx(classes.options, isOpen && classes.list_open)}>
+          <ItemRenderer
+            isRoot
+            items={options}
+            onSelect={(...props) => {
+              onSelect(...props);
+              setIsOpen(false);
+            }}
+          />
+        </div>
       </div>
-      <div className={classes.value}>{value}</div>
-      <div className={cx(classes.options, isOpen && classes.list_open)}>
-        <ItemRenderer isRoot items={options} onSelect={onSelect} />
-      </div>
-    </div>
+    </ClickOutside>
   );
 };
 
 export default MultiSelect;
+
+const md = SIZES.md;
 
 const classes = {
   list_open: css`
@@ -33,6 +48,9 @@ const classes = {
     }
   `,
   options: css`
+    @media screen and (max-width: ${md}px) {
+      width: 100%;
+    }
     position: absolute;
     top: 100%;
     margin-top: 12px;
@@ -64,6 +82,12 @@ const classes = {
     cursor: pointer;
   `,
   items_wrapper: css`
+    @media screen and (max-width: ${md}px) {
+      width: 100%;
+      left: 0;
+      margin-left: 0;
+      margin-top: 62px;
+    }
     position: absolute;
     background-color: #fff;
     left: 100%;
@@ -84,6 +108,7 @@ const classes = {
     left: 0;
     top: 100%;
     margin-left: 0px;
+    margin-top: 0;
     border-top-right-radius: 0;
     border-top-left-radius: 0;
   `,
@@ -111,13 +136,22 @@ const classes = {
         top: 0;
       }
     }
+  `,
+  hider_items: css`
+    @media screen and (max-width: ${md}px) {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
   `
 };
 
 const ItemRenderer = ({ items, isRoot, isLast, onSelect }) => {
+  const [isShowHider, setShowHider] = useState(false);
   return (
     <div
-      onClick={e => e.stopPropagation()}
       className={cx(
         classes.items_wrapper,
         isRoot && classes.root_items,
@@ -125,19 +159,36 @@ const ItemRenderer = ({ items, isRoot, isLast, onSelect }) => {
         'items'
       )}
     >
-      {(items || []).map(e => (
-        <button
-          className={classes.item}
-          onClick={() => e.isTarget && onSelect(e)}
-        >
-          {e.title}
-          <ItemRenderer
-            isLast={!items.children}
-            items={e.children}
-            onSelect={onSelect}
-          />
-        </button>
-      ))}
+      {isRoot && isShowHider && (
+        <div
+          onClick={e => {
+            e.stopPropagation();
+            setTimeout(() => setShowHider(false));
+          }}
+          className={classes.hider_items}
+        ></div>
+      )}
+      <div
+        onClick={e => {
+          e.stopPropagation();
+          setShowHider(true);
+        }}
+      >
+        {(items || []).map((e, i) => (
+          <div
+            key={i}
+            className={classes.item}
+            onClick={() => e.isTarget && onSelect && onSelect(e)}
+          >
+            {e.title}
+            <ItemRenderer
+              isLast={!items.children}
+              items={e.children}
+              onSelect={onSelect}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
