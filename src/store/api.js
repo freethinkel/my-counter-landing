@@ -19,26 +19,6 @@ export const getRegionsRequest = () => {
 };
 
 export const detectCity = () => {
-  // FIXME: http://api.ipstack.com//check?access_key=c6d1e3b4851f1ab8a550b8a55b6d1aeb&language=ru
-  // return new Promise((rslv, rjct) => {
-  //   let data = {
-  //     status: 'success',
-  //     country: 'Россия',
-  //     countryCode: 'RU',
-  //     region: 'TA',
-  //     regionName: 'Татарстан',
-  //     city: 'Владимир',
-  //     zip: '422528',
-  //     lat: 55.7666,
-  //     lon: 49.1686,
-  //     timezone: 'Europe/Moscow',
-  //     isp: 'Teleset Company. City of Kazan.',
-  //     org: 'Teleset LLC',
-  //     as: 'AS24810 PJSC Rostelecom',
-  //     query: '87.117.168.126'
-  //   };
-  //   rslv(data);
-  // });
   return axios
     .get('/geolocation.php')
     .then(res => {
@@ -64,24 +44,29 @@ export const geoCodeFromCity = city => {
     });
 };
 
-export const getServiceDate = (serviceId, cityId) => {
+export const getServiceDates = (serviceId, cityId) => {
   return axios
-    .get(`https://itl33.ru/b24/poverka/get_date.php?city_id=${cityId}`)
+    .get(
+      `https://itl33.ru/b24/poverka/index.php?act=get_dates&city_id=${cityId}&serv_id=${serviceId}`
+    )
     .then(res => res.data)
     .catch(err => {
       console.log(err);
     });
 };
 
-export const sendLeadToBitrix = model => {
+export const getServicePrices = cityId => {
   return axios
-    .post(
-      `https://energo-m.bitrix24.ru/rest/104/v226w7v0iabush5s/crm.lead.add`,
-      model
-    )
-    .catch(err => {
-      console.log(err);
-    });
+    .get(`https://itl33.ru/b24/poverka/get_prices.php?city_id=${cityId}`)
+    .then(res => res.data)
+    .catch(err => console.log(err));
+};
+
+export const sendLeadToBitrix = model => {
+  return axios.post(
+    `https://energo-m.bitrix24.ru/rest/1/5ooyrhggic6b4fx6/crm.lead.add`,
+    model
+  );
 };
 
 // export const getServiceDate = (serviceId, cityId) => {

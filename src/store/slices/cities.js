@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
   getAllCities,
   detectCity,
-  getServiceDate,
+  getServiceDates,
   getRegionsRequest
 } from '../api';
 
@@ -95,4 +95,8 @@ export const getRegionsAction = dispatch => {
   } catch (err) {
     console.log(err);
   }
+};
+
+export const setCurrentCityAction = dispatch => city => {
+  dispatch(setCurrentCity(city));
 };

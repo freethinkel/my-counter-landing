@@ -10,7 +10,8 @@ import { SIZES } from '../assets/styles';
 import SwipeableViews from 'react-swipeable-views';
 import {
   getServiceDateAction,
-  setServicesPrice
+  setServicesPrice,
+  getServicePricesAction
 } from '../store/slices/settings';
 
 function Services() {
@@ -24,12 +25,18 @@ function Services() {
       const findedCity = cities.find(
         c => c.city.trim().toLowerCase() === currentCity.trim().toLowerCase()
       );
-      getServiceDateAction(dispatch)(null, findedCity.id);
-      dispatch(setServicesPrice(findedCity.price_pov));
+      getServiceDateAction(dispatch)(
+        services.map(e => e.service_id),
+        findedCity.id
+      );
+      getServicePricesAction(dispatch)(findedCity.id);
       dispatch(selectService(services[0]));
     }
-  }, [services, currentCity, cities]);
-  const currentService = services[currentIndex] || {};
+  }, [(services || []).length, currentCity, cities, dispatch]);
+  const servicesDates = services.map(e => e.dates);
+  useEffect(() => {
+    dispatch(selectService(services[0]));
+  }, [servicesDates]);
   const setService = () => {
     scrollToSection('ordering');
     dispatch(selectService(services[currentIndex]));

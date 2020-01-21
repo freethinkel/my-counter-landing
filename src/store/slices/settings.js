@@ -1,5 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getSettingsContentful, getServiceDate } from '../api';
+import {
+  getSettingsContentful,
+  getServiceDates,
+  getServicePrices
+} from '../api';
 import { selectService } from './ordering';
 
 const settingsSlice = createSlice({
@@ -21,10 +25,26 @@ const settingsSlice = createSlice({
       state.app_loading = false;
     },
     setServicesDate(state, action) {
-      state.services.forEach(e => (e.date = action.payload));
+      state.services.forEach(s => (s.dates = []));
+      (action.payload || []).forEach(d => {
+        state.services.forEach(service => {
+          if (d.serviceId === service.service_id) {
+            service.dates = d.dates || [];
+          }
+        });
+      });
+      // state.services.forEach(e => (e.dates = action.payload));
     },
     setServicesPrice(state, action) {
-      state.services.forEach(e => (e.price = action.payload));
+      const prices = action.payload;
+      prices.forEach(_price => {
+        const { serv_id, price } = _price;
+        state.services.forEach(service => {
+          if (service.service_id === serv_id) {
+            service.price = price;
+          }
+        });
+      });
     }
   }
 });
@@ -39,7 +59,6 @@ export default settingsSlice.reducer;
 
 export const getAppSettingsAction = dispatch => () => {
   getSettingsContentful().then(data => {
-    console.log(data);
     let _data = { ...data };
     _data.banner_photo = data.banner_photo.fields;
     _data.services = data.services.map(e => ({
@@ -59,9 +78,23 @@ export const getAppSettingsAction = dispatch => () => {
   });
 };
 
-export const getServiceDateAction = dispatch => (serviceId, cityId) => {
-  getServiceDate(serviceId, cityId).then(res => {
-    const _date = new Date(res).toString();
-    dispatch(setServicesDate(_date));
+export const getServiceDateAction = dispatch => (servicesId, cityId) => {
+  Promise.all(
+    servicesId.map(serviceId => getServiceDates(serviceId, cityId))
+  ).then(datess => {
+    dispatch(
+      setServicesDate(
+        servicesId.map((id, i) => ({
+          serviceId: id,
+          dates: datess[i] || []
+        }))
+      )
+    );
+  });
+};
+
+export const getServicePricesAction = dispatch => cityId => {
+  getServicePrices(cityId).then(data => {
+    dispatch(setServicesPrice(data || []));
   });
 };

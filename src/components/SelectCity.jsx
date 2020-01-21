@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-// import classes from './SelectCity.module.scss';
-import CustomSelector from './CustomSelector';
 import Skeleton from './Skeleton';
 import { css } from 'linaria';
-import { setCurrentCity } from '../store/slices/cities';
+import { setCurrentCityAction } from '../store/slices/cities';
 import { useDispatch } from 'react-redux';
 import { SIZES } from '../assets/styles';
 import MultiSelect from './MultiSelect';
@@ -35,7 +33,8 @@ export default function SelectCity() {
     }
   }, [_cities, _regions]);
   const selectCity = e => {
-    dispatch(setCurrentCity(e.title));
+    // dispatch(setCurrentCity(e.title));
+    setCurrentCityAction(dispatch)(e.title);
   };
   const showSureCity =
     !isOpenSelector &&

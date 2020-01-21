@@ -10,7 +10,14 @@ const MONTHS = DatePipe.rusMonth.imn.map(e => e[0].toUpperCase() + e.substr(1));
 const WEEKDAYS_LONG = DatePipe.weekDay;
 const WEEKDAYS_SHORT = DatePipe.weekDayShort;
 
-const DatePicker = ({ onSelect, value, pastBefore, placeholder, label }) => {
+const DatePicker = ({
+  onSelect,
+  value,
+  pastBefore,
+  placeholder,
+  label,
+  disabledDays
+}) => {
   return (
     <>
       <Select
@@ -21,7 +28,7 @@ const DatePicker = ({ onSelect, value, pastBefore, placeholder, label }) => {
           <div className={classes.list}>
             <DayPicker
               locale="ru"
-              disabledDays={{ before: pastBefore }}
+              disabledDays={disabledDays || { before: pastBefore }}
               weekdaysLong={WEEKDAYS_LONG}
               selectedDays={value ? new Date(value) : null}
               onDayClick={d =>

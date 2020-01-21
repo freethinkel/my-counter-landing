@@ -28,6 +28,7 @@ function AboutCompany() {
           <div className={classes.col}>
             <div className={classes.items}>
               <SliderControls
+                activeIndex={sliderIndex}
                 onChange={i => setSliderIndex(i)}
                 length={advantages.length}
               />

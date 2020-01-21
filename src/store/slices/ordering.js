@@ -17,7 +17,20 @@ const orderingSlice = createSlice({
   },
   reducers: {
     selectService(state, action) {
-      state.currentService = action.payload;
+      const service = action.payload;
+      state.currentService = service;
+      if (service && service.dates && service.dates.length) {
+        const dates = service.dates
+          .map(e => new Date(e.date))
+          .filter(e => e.getTime() > Date.now())
+          .sort((a, b) => a.getTime() - b.getTime());
+        console.log(dates);
+        if (dates.length) {
+          state.departDate = dates[0] + '';
+        } else {
+          state.departDate = null;
+        }
+      }
     },
     setPhoneNumberOrdering(state, action) {
       state.phoneNumber = action.payload;
@@ -71,7 +84,7 @@ export const sendNewOrderAction = dispatch => model => {
       HAS_PHONE: 'Y',
       SOURCE_DESCRIPTION: 'Заявка с сайта "Мой счетчик"',
       COMMENTS: `Выбранная дата выезда ${new DatePipe(
-        model.currentService.date
+        model.departDate
       ).getLongDate()}`
     }
   };
@@ -92,6 +105,9 @@ export const sendNewOrderAction = dispatch => model => {
   sendLeadToBitrix(_model)
     .then(data => {
       dispatch(setOrderingSuccess(true));
+      setTimeout(() => {
+        dispatch(setOrderingSuccess(false));
+      }, 1000 * 5);
     })
     .catch(err => {
       dispatch(setOrderingError(true));
