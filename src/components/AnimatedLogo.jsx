@@ -4,10 +4,14 @@ import { COLORS } from '../assets/styles';
 
 const AnimatedLogo = ({ isMobile }) => {
   const reAnimate = () => {
-    const numbers = document.querySelector('header a .numbers');
-    numbers.style.display = 'none';
+    const numbers = document.querySelectorAll('header a .numbers');
+    numbers.forEach(num => {
+      num.style.display = 'none';
+    });
     setTimeout(() => {
-      numbers.style.display = 'block';
+      numbers.forEach(num => {
+        num.style.display = 'block';
+      });
     }, 100);
   };
   return (

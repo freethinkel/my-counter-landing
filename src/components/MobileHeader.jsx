@@ -9,12 +9,12 @@ import AnimatedLogo from './AnimatedLogo';
 
 const menus = [
   {
-    title: 'О компании',
-    url: 'about'
-  },
-  {
     title: 'Услуги',
     url: 'services'
+  },
+  {
+    title: 'О компании',
+    url: 'about'
   },
   {
     title: 'Знаете ли вы',

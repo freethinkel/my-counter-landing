@@ -92,7 +92,11 @@ function Services() {
                       title={_service.name}
                       photo={_service.photo?.file?.url}
                       price={_service.price}
-                      date={_service.date}
+                      date={
+                        (_service.dates || [])
+                          .map(e => new Date(e.date))
+                          .sort((a, b) => a.getTime() - b.getTime())[0]
+                      }
                       description={_service.description}
                       onEnroll={() => setService()}
                     />

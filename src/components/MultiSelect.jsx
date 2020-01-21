@@ -101,7 +101,7 @@ const classes = {
     z-index: 10;
   `,
   last_items: css`
-    max-height: 70vh;
+    max-height: 50vh;
     overflow-y: auto;
   `,
   root_items: css`

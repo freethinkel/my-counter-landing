@@ -34,12 +34,16 @@ const ServiceCardDetails = ({
           <img className={classes.photo} src={photo} alt="" />
         </div>
         <div className={classes.content_footer}>
-          <p className={classes.service_date_description}>
-            Наш специалист приедет к вам:
-          </p>
-          <div className={classes.service_date}>
-            {new DatePipe(date).getLongDate()}
-          </div>
+          {!!date && (
+            <>
+              <p className={classes.service_date_description}>
+                Наш специалист приедет к вам:
+              </p>
+              <div className={classes.service_date}>
+                {new DatePipe(date).getLongDate()}
+              </div>
+            </>
+          )}
         </div>
       </div>
       <Button color="primary" onClick={onEnroll} className={classes.footer_btn}>
