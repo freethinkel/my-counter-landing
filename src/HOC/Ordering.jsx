@@ -216,7 +216,7 @@ export default function Ordering() {
                   {!currentServiceAllowDates.length && (
                     <div className={classes.ordering_message}>
                       Нет свободных дат на выбранную услугу в текущем городе, но
-                      е расстраивайтесь! Возможно мы Вам поможем по телефону:{' '}
+                      не расстраивайтесь! Возможно мы Вам поможем по телефону:{' '}
                       <a href={'tel: ' + phoneNumber}>
                         {phonePipe(phoneNumber)}
                       </a>
