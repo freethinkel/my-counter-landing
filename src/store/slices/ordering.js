@@ -22,7 +22,11 @@ const orderingSlice = createSlice({
       if (service && service.dates && service.dates.length) {
         const dates = service.dates
           .map(e => new Date(e.date))
-          .filter(e => e.getTime() > Date.now())
+          .filter(
+            e =>
+              new Date(e.setHours(0, 0, 0, 0)).getTime() >=
+              new Date(new Date().setHours(0, 0, 0, 0)).getTime()
+          )
           .sort((a, b) => a.getTime() - b.getTime());
         console.log(dates);
         if (dates.length) {

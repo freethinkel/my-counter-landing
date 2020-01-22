@@ -95,6 +95,13 @@ function Services() {
                       date={
                         (_service.dates || [])
                           .map(e => new Date(e.date))
+                          .filter(
+                            e =>
+                              new Date(e.setHours(0, 0, 0, 0)).getTime() >=
+                              new Date(
+                                new Date().setHours(0, 0, 0, 0)
+                              ).getTime()
+                          )
                           .sort((a, b) => a.getTime() - b.getTime())[0]
                       }
                       description={_service.description}

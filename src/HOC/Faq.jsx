@@ -106,6 +106,10 @@ const classes = {
     flex-grow: 1;
     font-size: 20px;
     line-height: 36px;
+    width: 100%;
+    & p + p {
+      margin-top: 12px;
+    }
     @media screen and (max-width: ${SIZES.md}px) {
       display: none;
     }
@@ -182,9 +186,13 @@ const classes = {
     transition: 0.3s;
     font-size: 16px;
     height: 0;
+    width: 100%;
     & p {
       font-size: 16px;
       line-height: 22px;
+      & + p {
+        margin-top: 12px;
+      }
     }
     @media screen and (max-width: ${SIZES.md}px) {
       display: block;

@@ -83,7 +83,7 @@ const classes = {
     min-width: 170px;
     max-width: 190px;
     @media screen and (max-width: ${SIZES.md}px) {
-      width: 100%;
+      min-width: 100%;
       max-width: 100%;
       padding-bottom: 6px;
     }

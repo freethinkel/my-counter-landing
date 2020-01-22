@@ -38,7 +38,12 @@ const MobileHeader = ({ className }) => {
     <>
       <div className={className}>
         <div className={cx('container', classes.container)}>
-          <Burger onClick={() => setIsOpen(!isOpen)} state={isOpen} />
+          <div className={classes.container_left}>
+            <Burger onClick={() => setIsOpen(!isOpen)} state={isOpen} />
+            <div className={classes.select_city}>
+              <SelectCity />
+            </div>
+          </div>
           <Link to="/" className={classes.logo}>
             {/* <img src={require('../assets/images/logo.svg')} alt="" /> */}
             <AnimatedLogo isMobile />
@@ -51,7 +56,7 @@ const MobileHeader = ({ className }) => {
           isOpen && classes.header_content_active
         )}
       >
-        <SelectCity />
+        {/* <SelectCity /> */}
         <Menu onChange={() => setIsOpen(false)} />
         <PhoneView
           phone={phone}
@@ -137,6 +142,29 @@ const classes = {
     display: flex;
     justify-content: space-between;
     align-items: center;
+  `,
+  container_left: css`
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+  `,
+  select_city: css`
+    padding-left: 12px;
+    flex-grow: 1;
+    margin-bottom: -6px;
+    & .items {
+      position: fixed;
+      left: 0;
+      right: 0;
+      top: 100px !important;
+      & .items {
+        position: absolute;
+        top: 0 !important;
+        left: 0;
+        right: 0;
+        margin-top: 68px;
+      }
+    }
   `,
   header_content: css`
     background-color: #fff;
