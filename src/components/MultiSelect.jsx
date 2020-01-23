@@ -149,7 +149,6 @@ const classes = {
 };
 
 const ItemRenderer = ({ items, isRoot, isLast, onSelect }) => {
-  const [isShowHider, setShowHider] = useState(false);
   return (
     <div
       className={cx(
@@ -159,19 +158,9 @@ const ItemRenderer = ({ items, isRoot, isLast, onSelect }) => {
         'items'
       )}
     >
-      {isRoot && isShowHider && (
-        <div
-          onClick={e => {
-            e.stopPropagation();
-            setTimeout(() => setShowHider(false));
-          }}
-          className={classes.hider_items}
-        ></div>
-      )}
       <div
         onClick={e => {
           e.stopPropagation();
-          setShowHider(true);
         }}
       >
         {(items || []).map((e, i) => (

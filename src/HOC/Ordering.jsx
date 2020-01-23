@@ -238,11 +238,7 @@ export default function Ordering() {
                     color="primary"
                     type="submit"
                     className={classes.button}
-                    disabled={
-                      !isValid() ||
-                      orderingState.loading ||
-                      !orderingState.departDate
-                    }
+                    disabled={!isValid() || orderingState.loading}
                   >
                     Оставить заявку
                   </Button>
