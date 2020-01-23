@@ -58,7 +58,7 @@ const classes = {
   numbers_wrapper: css`
     position: absolute;
     top: 0;
-    left: 25px;
+    left: 24px;
     overflow: hidden;
     height: 66px;
     padding: 0 3px;
@@ -93,13 +93,13 @@ const classes = {
     }
   `,
   numbers: css`
-    transform: translateY(-200px);
-    position: absolute;
+    transform: translateY(-194px);
+    ${'' /* position: absolute;
     top: 0;
     left: 2px;
     @media screen and (max-width: ${SIZES.md}px) {
       left: 3px;
-    }
+    } */}
     animation: numbers 1.3s 5 linear;
     & span {
       color: ${COLORS.primary};
@@ -108,37 +108,39 @@ const classes = {
       text-shadow: 0px 0px 2px ${COLORS.primary};
       font-size: 26px;
       line-height: 26px;
+      height: 24px;
     }
     @keyframes numbers {
       from {
-        transform: translateY(-446px);
+        transform: translateY(-435px);
       }
       to {
-        transform: translateY(-200px);
+        transform: translateY(-194px);
       }
     }
   `,
   mobile_wrapper: css`
     height: 43px;
     & .numbers {
-      transform: translateY(-117px);
+      transform: translateY(-112px);
       animation: numbers-mobile 1.3s 5 linear;
     }
     & .numbers_wrapper {
-      left: 14px;
+      left: 15px;
       height: 42px;
     }
     & span {
       font-size: 15px;
       line-height: 15px;
+      height: 14px;
     }
 
     @keyframes numbers-mobile {
       from {
-        transform: translateY(-262px);
+        transform: translateY(-252px);
       }
       to {
-        transform: translateY(-117px);
+        transform: translateY(-112px);
       }
     }
   `
