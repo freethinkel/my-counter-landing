@@ -29,7 +29,7 @@ export default function Ordering() {
     name: { error: true, touched: false },
     phone: { error: true, touched: false },
     address: { error: true, touched: false },
-    date: { error: true, touched: false }
+    date: { error: false, touched: true }
   });
 
   const currentServiceAllowDates =
@@ -55,7 +55,16 @@ export default function Ordering() {
   };
   const onSubmit = e => {
     e.preventDefault();
-    sendNewOrderAction(dispatch)({ ...orderingState, city: currentCity });
+    const findedCity = cities.find(
+      c => c.city.trim().toLowerCase() === currentCity.trim().toLowerCase()
+    );
+    sendNewOrderAction(dispatch)({
+      ...orderingState,
+      city: {
+        name: currentCity,
+        id: findedCity.id
+      }
+    });
     console.log(errors);
   };
   const isValid = () =>
@@ -229,7 +238,11 @@ export default function Ordering() {
                     color="primary"
                     type="submit"
                     className={classes.button}
-                    disabled={!isValid() || orderingState.loading}
+                    disabled={
+                      !isValid() ||
+                      orderingState.loading ||
+                      !orderingState.departDate
+                    }
                   >
                     Оставить заявку
                   </Button>

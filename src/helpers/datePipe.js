@@ -67,6 +67,12 @@ export class DatePipe {
     return `${this.fixedNumber(this.d.getDate())} ${this.getLongMonth()}`;
   }
 
+  getShortDate() {
+    return `${this.fixedNumber(this.d.getDate())}.${this.fixedNumber(
+      this.d.getMonth() + 1
+    )}.${this.getYear()}`;
+  }
+
   fixedNumber(n, l = 2) {
     return `${(new Array(l).fill(0).join('') + n).slice(-l)}`;
   }

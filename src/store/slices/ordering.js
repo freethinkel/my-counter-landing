@@ -76,36 +76,32 @@ export default orderingSlice.reducer;
 export const sendNewOrderAction = dispatch => model => {
   dispatch(setOrderingLoading(true));
   let _model = {
-    fields: {
-      NAME: model.name,
-      STATUS_ID: 'NEW',
-      OPENED: 'Y',
-      PHONE: [{ VALUE: model.phoneNumber, VALUE_TYPE: 'WORK' }],
-      OPPORTUNITY: model.currentService.price,
-      TITLE: `Заявка с сайта - ${model.currentService.description}`,
-      ADDRESS_CITY: model.city,
-      ADDRESS: model.address,
-      HAS_PHONE: 'Y',
-      SOURCE_DESCRIPTION: 'Заявка с сайта "Мой счетчик"',
-      COMMENTS: `Выбранная дата выезда ${new DatePipe(
-        model.departDate
-      ).getLongDate()}`
-    }
+    fname: model.name,
+    city: `${model.city.name}_${model.city.id}`,
+    date: new DatePipe(model.departDate).getShortDate(),
+    address: model.address,
+    tel: (model.phoneNumber + '')
+      .split('')
+      .filter(e => !isNaN(+e) && e !== ' ')
+      .join(''),
+    act: 'submit_pform',
+    service: model.currentService.service_id
+    // fields: {
+    //   NAME: model.name,
+    //   STATUS_ID: 'NEW',
+    //   OPENED: 'Y',
+    //   PHONE: [{ VALUE: model.phoneNumber, VALUE_TYPE: 'WORK' }],
+    //   OPPORTUNITY: model.currentService.price,
+    //   TITLE: `Заявка с сайта - ${model.currentService.description}`,
+    //   ADDRESS_CITY: model.city,
+    //   ADDRESS: model.address,
+    //   HAS_PHONE: 'Y',
+    //   SOURCE_DESCRIPTION: 'Заявка с сайта "Мой счетчик"',
+    //   COMMENTS: `Выбранная дата выезда ${new DatePipe(
+    //     model.departDate
+    //   ).getLongDate()}`
+    // }
   };
-  // fields:
-  // 	{
-  // 		"TITLE": "ИП Титов",
-  // 		"NAME": "Глеб",
-  // 		"SECOND_NAME": "Егорович",
-  // 		"LAST_NAME": "Титов",
-  // 		"STATUS_ID": "NEW",
-  // 		"OPENED": "Y",
-  // 		"ASSIGNED_BY_ID": 1,
-  // 		"CURRENCY_ID": "USD",
-  // 		"OPPORTUNITY": 12500,
-  // 		"PHONE": [ { "VALUE": "555888", "VALUE_TYPE": "WORK" } ]
-  // 	},
-  // 	params: { "REGISTER_SONET_EVENT": "Y" }
   sendLeadToBitrix(_model)
     .then(data => {
       dispatch(setOrderingSuccess(true));

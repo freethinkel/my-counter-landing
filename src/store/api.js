@@ -63,10 +63,7 @@ export const getServicePrices = cityId => {
 };
 
 export const sendLeadToBitrix = model => {
-  return axios.post(
-    `https://energo-m.bitrix24.ru/rest/1/5ooyrhggic6b4fx6/crm.lead.add`,
-    model
-  );
+  return axios.get('https://itl33.ru/b24/poverka/index.php', { params: model });
 };
 
 // export const getServiceDate = (serviceId, cityId) => {
