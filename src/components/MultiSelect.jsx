@@ -41,9 +41,12 @@ const md = SIZES.md;
 
 const classes = {
   list_open: css`
+    z-index: 100;
+    visibility: visible !important;
+    display: block !important;
     & > .items {
       opacity: 1;
-      visibility: visible;
+      visibility: visible !important;
       top: 0 !important;
     }
   `,
@@ -54,7 +57,11 @@ const classes = {
     position: absolute;
     top: 100%;
     margin-top: 12px;
-    & > .items {
+    visibility: hidden;
+    z-index: -100;
+    display: none;
+    & .items {
+      visibility: hidden;
       top: 10px;
     }
   `,
@@ -136,15 +143,6 @@ const classes = {
         top: 0;
       }
     }
-  `,
-  hider_items: css`
-    @media screen and (max-width: ${md}px) {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-    }
   `
 };
 
@@ -158,11 +156,7 @@ const ItemRenderer = ({ items, isRoot, isLast, onSelect }) => {
         'items'
       )}
     >
-      <div
-        onClick={e => {
-          e.stopPropagation();
-        }}
-      >
+      <div>
         {(items || []).map((e, i) => (
           <div
             key={i}

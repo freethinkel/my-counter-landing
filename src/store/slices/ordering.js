@@ -78,7 +78,6 @@ export const sendNewOrderAction = dispatch => model => {
   let _model = {
     fname: model.name,
     city: `${model.city.name}_${model.city.id}`,
-    date: new DatePipe(model.departDate).getShortDate(),
     address: model.address,
     tel: (model.phoneNumber + '')
       .split('')
@@ -102,6 +101,9 @@ export const sendNewOrderAction = dispatch => model => {
     //   ).getLongDate()}`
     // }
   };
+  if (model.departDate) {
+    _model.date = new DatePipe(model.departDate).getShortDate();
+  }
   sendLeadToBitrix(_model)
     .then(data => {
       dispatch(setOrderingSuccess(true));
