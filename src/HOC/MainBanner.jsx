@@ -94,6 +94,7 @@ const classes = {
     padding: 82px 0;
     @media screen and (max-width: ${SIZES.md}px) {
       padding: 32px 0;
+      user-select: none;
     }
   `,
   image: css`

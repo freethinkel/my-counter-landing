@@ -76,10 +76,13 @@ const classes = {
     font-size: 20px;
     white-space: nowrap;
     text-overflow: ellipsis;
+    user-select: none;
   `,
   placeholder: css`
     display: flex;
+    user-select: none;
     & span {
+      user-select: none;
       padding-left: 8px;
       font-size: 14px;
     }
@@ -135,6 +138,7 @@ const classes = {
     font-size: 24px;
     color: #000;
     white-space: nowrap;
+    user-select: none;
     &:hover {
       background-color: #eee5e5;
       & .items {
