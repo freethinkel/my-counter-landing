@@ -156,7 +156,11 @@ const ItemRenderer = ({ items, isRoot, isLast, onSelect }) => {
         'items'
       )}
     >
-      <div>
+      <div
+        onClick={e => {
+          e.stopPropagation();
+        }}
+      >
         {(items || []).map((e, i) => (
           <div
             key={i}
