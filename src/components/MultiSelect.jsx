@@ -9,8 +9,9 @@ const MultiSelect = ({ options, label, value, onSelect, opened }) => {
   }, [opened]);
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <ClickOutside onClickOutside={() => isOpen && setIsOpen(false)}>
-      <div className={classes.wrapper} onClick={() => setIsOpen(!isOpen)}>
+    // <ClickOutside onClickOutside={() => isOpen && setIsOpen(false)}>
+    <div className={classes.wrapper}>
+      <div onClick={() => setIsOpen(!isOpen)}>
         <div className={classes.placeholder}>
           <img
             className={cx(classes.arrow, isOpen && classes.arrow_open)}
@@ -20,18 +21,19 @@ const MultiSelect = ({ options, label, value, onSelect, opened }) => {
           <span>{label}</span>
         </div>
         <div className={classes.value}>{value}</div>
-        <div className={cx(classes.options, isOpen && classes.list_open)}>
-          <ItemRenderer
-            isRoot
-            items={options}
-            onSelect={(...props) => {
-              onSelect(...props);
-              setIsOpen(false);
-            }}
-          />
-        </div>
       </div>
-    </ClickOutside>
+      <div className={cx(classes.options, isOpen && classes.list_open)}>
+        <ItemRenderer
+          isRoot
+          items={options}
+          onSelect={(...props) => {
+            onSelect(...props);
+            setIsOpen(false);
+          }}
+        />
+      </div>
+    </div>
+    // </ClickOutside>
   );
 };
 
@@ -76,13 +78,10 @@ const classes = {
     font-size: 20px;
     white-space: nowrap;
     text-overflow: ellipsis;
-    user-select: none;
   `,
   placeholder: css`
     display: flex;
-    user-select: none;
     & span {
-      user-select: none;
       padding-left: 8px;
       font-size: 14px;
     }
@@ -138,48 +137,84 @@ const classes = {
     font-size: 24px;
     color: #000;
     white-space: nowrap;
-    user-select: none;
     &:hover {
       background-color: #eee5e5;
-      & .items {
+      ${'' /* & .items {
         opacity: 1;
         visibility: visible;
         top: 0;
-      }
+      } */}
+    }
+  `,
+  open_state: css`
+    & .items {
+      opacity: 1;
+      visibility: visible;
+      top: 0;
     }
   `
 };
 
 const ItemRenderer = ({ items, isRoot, isLast, onSelect }) => {
+  const [openedIndex, setOpenedIndex] = useState();
   return (
     <div
       className={cx(
         classes.items_wrapper,
         isRoot && classes.root_items,
         isLast && classes.last_items,
+        false && classes.open_state,
         'items'
       )}
     >
       <div
-        onClick={e => {
-          e.stopPropagation();
-        }}
+      // onClick={e => {
+      //   e.stopPropagation();
+      // }}
       >
         {(items || []).map((e, i) => (
           <div
             key={i}
-            className={classes.item}
-            onClick={() => e.isTarget && onSelect && onSelect(e)}
+            onMouseEnter={() => {
+              setOpenedIndex(i);
+            }}
+            onTouchEnd={() => {
+              setOpenedIndex(i);
+            }}
+            onMouseLeave={() => {
+              setOpenedIndex(-1);
+            }}
           >
-            {e.title}
-            <ItemRenderer
-              isLast={!items.children}
-              items={e.children}
+            <DropDownItem
+              className={i === openedIndex && classes.open_state}
+              items={items}
+              onClick={() => {
+                setOpenedIndex(i);
+              }}
               onSelect={onSelect}
+              elem={e}
             />
           </div>
         ))}
       </div>
+    </div>
+  );
+};
+
+const DropDownItem = ({ onSelect, elem, items, className }) => {
+  return (
+    <div
+      className={cx(classes.item, className)}
+      onClick={() => {
+        elem.isTarget && onSelect && onSelect(elem);
+      }}
+    >
+      {elem.title}
+      <ItemRenderer
+        isLast={!items.children}
+        items={elem.children}
+        onSelect={onSelect}
+      />
     </div>
   );
 };
